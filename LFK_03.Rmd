@@ -1,0 +1,85 @@
+---
+title: "LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+B2run <- read.csv2("https://statistix.org/Data/B2run.csv")
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Wissenschaftliche Grundlagen
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Explorative Datenanalyse: Analyse kategorialer Daten
+
+
+## Gütekriterien
+
+```{r Kriterien, echo=FALSE}
+question("Welches Gütekritierium empirisches Forschung kann durch eine zufällige Stichprobe positiv beeinflusst werden?",
+         answer("Interne Validität", message = "Die interne Validität kann durch eine zufällige Zuordnung der Werte der unabhängigen Variablen zu den Untersuchungseinheiten positiv beeinflusst werden."),
+         answer("Externe Validität", correct = TRUE, message = "Zufällige Stichproben erlauben zumindest eine Generalisierung auf die Population aus der sie gezogen wurden.")
+         )
+```
+
+
+## B2run
+
+Die FOM beteiligt sich seit mehreren Jahren am [B2run Firmenlauf](https://www.b2run.de/run/de/de/infos/was-ist-b2run/index.html), so auch die FOM Dortmund, deren Daten hier vorliegen.
+
+```{r, message=FALSE}
+# Paket laden
+library(mosaic)
+# Daten (aus dem Internet) in R einlesen, 
+# Beobachtungsnummer in der 1. Spalte (row.names=1)
+B2run <- read.csv2("https://statistix.org/Data/B2run.csv", row.names = 1)
+# Datenstruktur
+str(B2run)
+# Ersten 6 Zeilen
+head(B2run)
+```
+
+
+## Beobachtungen
+
+```{r Beobachtung, echo=FALSE}
+question("Wer oder was ist im B2run Datensatz eine Beobachtungseinheit, d.h., auf welcher Ebene liegen die Daten vor?",
+         answer("Unternehmen", message = "Wenn die Daten von Läufer*innen mehrerer Unternehmen vorliegen, könnten diese auf dieser Ebene zusammengefasst werden."),
+         answer("Jahr", message = "Die Daten könnten auf dieser Ebene zusammengefasst werden."),
+         answer("Läufer*in", correct = TRUE, message = "Für die einzelnen Läufer*innen liegen die Daten eines Laufes vor.")
+         )
+```
+
+
+## Mosaicplot
+
+```{r Auswertung, exercise = TRUE}
+mosaicplot(jahr ~ geschlecht, data = B2run, color = TRUE)
+```
+
+```{r Frauenanteil, echo=FALSE}
+question("Im welchen Jahr war der Anteil der teilnehmenden Frauen am größten?",
+         answer("2017", message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an."),
+         answer("2018", message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an."),
+         answer("2019", correct = TRUE, message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an.")
+         )
+```
+
+```{r Laueferanteil, echo=FALSE}
+question("Im welchen Jahr gab es die meisten Teilnehmer*innen?",
+         answer("2017", correct = TRUE, message = "Die Breite der Balken gibt den relativen Anteil der Jahre an."),
+         answer("2018", message = "Die Breite der Balken gibt den relativen Anteil der Jahre an."),
+         answer("2019", message = "Die Breite der Balken gibt den relativen Anteil der Jahre an.")
+         )
+```
