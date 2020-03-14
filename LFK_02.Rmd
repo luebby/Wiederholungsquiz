@@ -1,5 +1,5 @@
 ---
-title: "LFK"
+title: "2. LFK"
 output: 
   learnr::tutorial:
     progressive: true
