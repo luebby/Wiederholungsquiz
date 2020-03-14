@@ -1,0 +1,103 @@
+---
+title: "LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Wissenschaftliche Grundlagen
+
+- Grundlagen Quantitativer Datenanalyse
+
+
+
+## Messkriterien
+
+
+```{r Messung, echo=FALSE}
+question("Was sagt mensch, wenn bei wiederholter Messung einer Eigenschaft ein sehr anderes Ergebnis gemessen wird?",
+         answer("Die Messung ist nicht objektiv", message = "Eine Messung wäre nicht objektiv, wenn zwei Messende zu unterschiedlichen Messergebnissen kommen würden."),
+         answer("Die Messung ist nicht reliabel", correct = TRUE, message = "Reliabilität beschreibt die Zuverlässigkeit einer Messung."),
+         answer("Die Messung ist nicht valide", message = "Eine Messung ist nicht valide, wenn nicht das gemessen wird, was gemessen werden soll.")
+         )
+```
+
+## Messniveau
+
+```{r Niveau, echo=FALSE}
+question("Welches Skalenniveau hat die Variable *Anzahl Downloads einer Lernunterlage*?",
+         answer("Numerisch – diskret", correct = TRUE, message = "Eine Messung ist diskret, wenn nur abzählbar viele Ausprägungen möglich sind."),
+         answer("Numerisch – stetig", message = "Bei einer (quasi-)stetigen Variable sind beliebige Zwischenwerte denkbar.")
+         )
+```
+
+
+
+## Skala
+
+```{r Skala, echo=FALSE}
+question("Welches Skalenniveau hat die Variable *Art des Mediums* (Video, Audio, Dokument)?",
+         answer("Kategorial – nominal", correct = TRUE, message = "Die Werte die die Variable annehmen kann können nur unterschieden werden."),
+         answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau müssten die Werte auch in eine Reihenfolge gebracht werden können."),
+         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssten die Werte auch in eine Reihenfolge gebracht werden können und die Abstände vergleichbar. Der Nullpunkt ist willkürlich."),
+         answer("Numerisch – verhältnisskaliert", message = "Für eine Verhältnisskalierung müssten die Werte auch in eine Reihenfolge gebracht werden können und die Abstände vergleichbar. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben.")         
+         )
+```
+
+
+## Datenerhebung
+
+Eine Analystin ermittelt im Online-Campus die Anzahl der Downloads je Medium.
+
+```{r Erhebung, echo=FALSE}
+question("Um welche Form der Datenerhebung handelt es sich?",
+         answer("Beobachtungsstudie", correct = TRUE, message = "Die Daten werden so erhoben wie sie sind, ohne dass in die Datenentstehung eingegriffen wird."),
+         answer("Experiment", message = "Bei einem Experiment wird der Wert der unabhängigen Variable ($x$) durch die Experimentator*in verändert.")
+         )
+```
+
+
+## Zusammenhang
+
+Eine Analystin ermittelt im Online-Campus die Anzahl der Downloads je Medium.
+
+```{r Zusammenhang, echo=FALSE}
+question("Welche Variable ist hier inhaltlich die unabhängige Variable?",
+         answer("Medium", correct = TRUE, message = "Das Medium ($x$) verändert sich nicht mit der Anzahl Downloads ($y$)."),
+         answer("Anzahl Downloads ", message = "Die Anzahl Downloads ($y$) kann sich evtl. mit dem Medium ($x$) ändern.")
+         )
+```
+
+
+## Schlussfolgerung
+
+Die Analystin stellt fest: *Videos werden häufiger heruntergeladen*. 
+
+```{r Schlussfolgerung, echo=FALSE}
+question("Ist hier eine Kausalaussage *Das Medium Video erhöht die Anzahl der Downloads* aufgrund der Datenanalyse gerechtfertigt?",
+         answer("Ja", message = "Beobachtungsstudien erlauben keine unmittelbaren Kausalaussagen."),
+         answer("Nein", correct = TRUE,  message = "Nur Experimente mit zufälliger Zuordnung zu den $x$-Werten erlauben unmittelbare Kausalaussagen.")
+         )
+```
+
+
+## Generalisierung
+
+Die Analystin fragt im Freundeskreis (Facebook) $10000$ Personen, welches Medium sie bevorzugen.
+
+```{r Generalisierung, echo=FALSE}
+question("Kann sie von ihrem Ergebnis direkt und unverzerrt auf die Population *Alle Menschen* schließen?",
+         answer("Ja", message = "Auch große Gelegenheitsstichproben können verzerrt sein."),
+         answer("Nein", correct = TRUE,  message = "Nur zufällige Stichproben erlauben eine Generalisierung auf die Population.")
+         )
+```
