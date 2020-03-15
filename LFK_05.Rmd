@@ -1,0 +1,102 @@
+---
+title: "5. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+options(scipen = 999)
+VaR <- round(500000*sqrt(5)*0.04*qnorm(1-0.05),2)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Normalverteilung
+
+
+## Value-at-Risk
+
+Der Value-at-Risk (VaR) ist ein Risikomaß im Finanzsektor (z. B. Basel, Solvency II): Der Value-at-Risk zum Niveau $\alpha$ ist das $\alpha$ Quantil der Vermögensänderung. In der Regel wird der Verlust mit positiven Vorzeichen angegeben, d. h., mit einer Wahrscheinlichkeit von $1-\alpha$ ist der *Verlust* nicht größer. Unter der Annahme (!) einer unabhängig identischen Normalverteilung der Renditen mit einer (Tages-)Volatiltät $\sigma$ ergibt sich für ein Portfolio mit einem Wert $v$ und einer Haltedauer $T$ folgende Formel für den VaR:
+
+$$
+VaR^T_{1-\alpha} = v \cdot \sqrt{T} \cdot \sigma\cdot \Phi^{-1}(1-\alpha)
+$$
+
+Dabei ist $\Phi^{-1}(p)$ die Quantilsfunktion der Standardnormalverteilung, d.h., einer Normalverteilung mit den Parametern $\mu=0$ und $\sigma=1$. Dies entspricht der `R` Zuweisung:
+
+```{r VaR-Formel, eval=FALSE}
+VaR <- v * sqrt(T) * s * qnorm(1-alpha)
+```
+
+
+Bestimmen Sie für ein Portfolio des Wertes $500000$ mit einer Volatilität von $4\%$ den Value-at-Risk zum Niveau $1\%$ bei einer Haltedauer von $5$ Tagen -- unter der Annahme einer unabhängigen, identischen Normalverteilung der Tagesrenditen.
+
+```{r var, exercise = TRUE, eval = FALSE}
+
+```
+
+```{r var-solution}
+500000 * sqrt(5) * 0.04 * qnorm(1 - 0.01)
+```
+
+
+<br>
+
+
+```{r VaR-T, echo=FALSE}
+question("Was passiert (ceteris paribus, d.h., unter sonst gleichen Umständen) mit dem Value-at-Risk, wenn die Haltedauer verkürzt wird?",
+         answer("Der Value-at-Risk ändert sich nicht.", message = "Der VaR ist auch eine Funktion von $T$."),
+         answer("Der Value-at-Risk wird größer.", message = "Der VaR ist eine monton steigende Funktion von $T$."),
+         answer("Der Value-at-Risk wird kleiner.", correct = TRUE, message = "Der VaR ist eine monton steigende Funktion von $T$.")
+         )
+```
+
+
+## Interpretation VaR
+
+Mit $\sigma=0.04$ und der Annahme einer unabhängigen, identischen Normalverteilung der Tagesrenditen ergibt sich für ein Portfolio mit dem Wert $v=500000$:
+
+$$VaR^{5}_{1-5\%}=`r round(500000*sqrt(5)*0.04*qnorm(1-0.05),2)`$$.
+
+
+Interpretieren Sie das Ergebnis.
+
+<br>
+
+*Zum Lösungsvorschlag auf `Next Topic` klicken.*
+
+##
+
+Mit einer Wahrscheinlichkeit von $5\,\%$ ist bei einem Portfoliowert von $500000$ der Verlust innerhalb von $5$-Tagen nicht größer als `r VaR`.
+
+## Verteilungsalternativen zur Normalverteilung
+
+Bei einer Normalverteilung sind *extreme* Werte sehr selten, auf den Finanzmarkt kommen extreme Kursveränderungen aber häufiger vor als unter einer Normalverteilung zu erwarten wäre. Daher verwendet man häufig auch andere Verteilungen zur Modellierung, z. B. eine t-Verteilung. Hier im Beispiel mit 3 Freiheitsgraden, engl: degrees of freedom, `df`.
+
+```{r tplot, echo=FALSE, warning=FALSE}
+p1 <- gf_dist(dist="norm") %>%
+  gf_lims(x=c(-6,6)) %>%
+  gf_labs(title = "Dichtefunktion Standardnormalverteilung")
+p2 <- gf_dist(dist="t", df = 3) %>%
+  gf_lims(x=c(-6,6)) %>%
+  gf_labs(title = "Dichtefunktion t-Verteilung")
+gridExtra::grid.arrange(p1,p2, nrow=2)
+```
+
+
+```{r t-Vert, echo=FALSE}
+question("Was passiert (ceteris paribus) mit dem Value-at-Risk, wenn statt einer Normalverteilung eine t-Verteilung verwendet wird?",
+         answer("Der Value-at-Risk ändert sich nicht.", message = "Hohe Kursänderungen kommen bei einer t-Verteilung häufiger vor als bei einer Normalverteilung, die Quantile sind weiter von der $0$ entfernt."),
+         answer("Der Value-at-Risk wird größer.", correct = TRUE, message = "Hohe Kursänderungen kommen bei einer t-Verteilung häufiger vor als bei einer Normalverteilung, die Quantile sind weiter von der $0$ entfernt."),
+         answer("Der Value-at-Risk wird kleiner.", message = "Hohe Kursänderungen kommen bei einer t-Verteilung häufiger vor als bei einer Normalverteilung, die Quantile sind weiter von der $0$ entfernt.")
+         )
+```
+
+
