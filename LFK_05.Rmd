@@ -10,6 +10,7 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 library(mosaic)
+library(gridExtra)
 options(scipen = 999)
 VaR <- round(500000*sqrt(5)*0.04*qnorm(1-0.05),2)
 ```
@@ -87,7 +88,7 @@ p1 <- gf_dist(dist="norm") %>%
 p2 <- gf_dist(dist="t", df = 3) %>%
   gf_lims(x=c(-6,6)) %>%
   gf_labs(title = "Dichtefunktion t-Verteilung")
-gridExtra::grid.arrange(p1,p2, nrow=2)
+grid.arrange(p1,p2, nrow=2)
 ```
 
 
