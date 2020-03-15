@@ -30,10 +30,10 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Explorative Datenanalyse
 
 
-## Gütekriterien
+## Guetekriterien
 
 ```{r Kriterien, echo=FALSE}
-question("Welches Gütekritierium empirisches Forschung kann durch eine zufällige Zuordnung im Experiment positiv beeinflusst werden?",
+question("Welches Gütekritierium empirischer Forschung kann durch eine zufällige Zuordnung im Experiment positiv beeinflusst werden?",
          answer("Interne Validität", correct = TRUE, message = "Randomisierte Experimente ermöglichen Kausalaussagen."),
          answer("Externe Validität", message = "Zufällige Stichproben erlauben eine Generalisierung auf die Population aus der sie gezogen wurden.")
          )
@@ -64,7 +64,7 @@ question("Welches Skalenniveau hat die Laufzeit (`zeit`)?",
          answer("Kategorial – nominal", message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
          answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
          answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände sind vergleichbar. Der Nullpunkt ist aber willkürlich."),
-         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben.")         
+         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")         
          )
 ```
 
@@ -98,7 +98,7 @@ gf_histogram( ~ zeit, data = B2run_w_2019, binwidth = 5, center = 32.5) %>%
 ```
 
 ```{r Laufzeit, echo=FALSE}
-question("In welchem Bereich fallen die meisten Beobachtungen?",
+question("In welchen Bereich fallen die meisten Beobachtungen?",
          answer("15-25 min.", message = "Die Höhe der Balken (y-Achse) gibt die (gruppierte) Häufigkeit der Laufzeit (x-Achse) an."),
          answer("25-35 min.", message = "Die Höhe der Balken (y-Achse) gibt die (gruppierte) Häufigkeit der Laufzeit (x-Achse) an."),
          answer("35-45 min.", correct = TRUE, message = "Die Höhe der Balken (y-Achse) gibt die (gruppierte) Häufigkeit der Laufzeit (x-Achse) an."),
@@ -111,8 +111,8 @@ question("In welchem Bereich fallen die meisten Beobachtungen?",
 
 ```{r Kennzahl, echo=FALSE}
 question("Welche Kennzahl beschreibt die Laufzeit einer typischen Läuferin besser?",
-         answer("Mittelwert (`mean`)", message = "Der arithmetische Mittelwert ist die Summe aller Beobachtungswerte geteilt durch die Anzahl der Beobachtungen. Hier: wenn alle Frauen gleich schnell gewesen wären, mit welcher individuellen Laufzeit würde mensch dann auf die gleiche Gesamtlaufzeit kommen."),
-         answer("Median (`median`)", correct = TRUE,  message = "Der Median ist der Wert der bei sortierten Beobachtungswerten diese in zwei gleich große Teile teilt.")
+         answer("Mittelwert (`mean`)", message = "Der arithmetische Mittelwert ist die Summe aller Beobachtungswerte geteilt durch die Anzahl der Beobachtungen. Hier: Wenn alle Frauen gleich schnell gewesen wären, mit welcher individuellen Laufzeit würde mensch dann auf die gleiche Gesamtlaufzeit kommen."),
+         answer("Median (`median`)", correct = TRUE,  message = "Der Median ist der Wert, der bei sortierten Beobachtungswerten diese in zwei gleich große Teile teilt.")
          )
 ```
 

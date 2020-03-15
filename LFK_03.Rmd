@@ -24,12 +24,12 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Explorative Datenanalyse: Analyse kategorialer Daten
 
 
-## Gütekriterien
+## Guetekriterien
 
 ```{r Kriterien, echo=FALSE}
-question("Welches Gütekritierium empirisches Forschung kann durch eine zufällige Stichprobe positiv beeinflusst werden?",
+question("Welches Gütekritierium empirischer Forschung kann durch eine zufällige Stichprobe positiv beeinflusst werden?",
          answer("Interne Validität", message = "Die interne Validität kann durch eine zufällige Zuordnung der Werte der unabhängigen Variablen zu den Untersuchungseinheiten positiv beeinflusst werden."),
-         answer("Externe Validität", correct = TRUE, message = "Zufällige Stichproben erlauben zumindest eine Generalisierung auf die Population aus der sie gezogen wurden.")
+         answer("Externe Validität", correct = TRUE, message = "Zufällige Stichproben erlauben zumindest eine Generalisierung auf die Population, aus der sie gezogen wurden.")
          )
 ```
 
@@ -70,16 +70,16 @@ mosaicplot(jahr ~ geschlecht, data = B2run, color = TRUE)
 
 ```{r Frauenanteil, echo=FALSE}
 question("Im welchen Jahr war der Anteil der teilnehmenden Frauen am größten?",
-         answer("2017", message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an."),
-         answer("2018", message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an."),
-         answer("2019", correct = TRUE, message = "Die Höhe der Balken gibt den relativen Anteil der Geschlechter an.")
+         answer("2017", message = "Die Höhe der Balken gibt den relativen Anteil nach Geschlecht an."),
+         answer("2018", message = "Die Höhe der Balken gibt den relativen Anteil nach Geschlecht an."),
+         answer("2019", correct = TRUE, message = "Die Höhe der Balken gibt den relativen Anteil nach Geschlecht an.")
          )
 ```
 
 ```{r Laueferanteil, echo=FALSE}
 question("Im welchen Jahr gab es die meisten Teilnehmer*innen?",
-         answer("2017", correct = TRUE, message = "Die Breite der Balken gibt den relativen Anteil der Jahre an."),
-         answer("2018", message = "Die Breite der Balken gibt den relativen Anteil der Jahre an."),
-         answer("2019", message = "Die Breite der Balken gibt den relativen Anteil der Jahre an.")
+         answer("2017", correct = TRUE, message = "Die Breite der Balken gibt den relativen Anteil nach Jahr an."),
+         answer("2018", message = "Die Breite der Balken gibt den relativen Anteil nach Jahr an."),
+         answer("2019", message = "Die Breite der Balken gibt den relativen Anteil nach Jahr an.")
          )
 ```

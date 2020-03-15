@@ -30,7 +30,7 @@ Susi arbeit aktiv nach und folgert daraus, dass sie die Klausur besteht.
 question("Welche wissenschaftliche Schlussart liegt vor?",
          answer("Induktion", message = "Induktion läge vor, wenn Susi auf Grund wiederholter Beobachtung zu dem Schluss gekommen wäre."),
          answer("Deduktion", correct = TRUE, message = "Susi schließt von einer allgemeinen Aussage auf eine speziellere."),
-         answer("Abduktion", message = "Abduktion liegt vor wenn eine erklärende Hypothese (spekulativ) gebildet wird.")
+         answer("Abduktion", message = "Abduktion liegt vor, wenn eine erklärende Hypothese (spekulativ) gebildet wird.")
          )
 ```
 
@@ -40,31 +40,31 @@ question("Welche wissenschaftliche Schlussart liegt vor?",
 ```{r Hypothesen, echo=FALSE}
 question("Ist die Aussage *Studierende, die die Vorlesung aktiv nacharbeiten, bestehen die Klausur* im Sinne Poppers eine wissenschaftliche Hypothese?",
          answer("Ja", correct = TRUE, message = "Die Aussage geht über den Einzelfall hinaus, insbesondere ist sie aber falsifizierbar."),
-         answer("Nein",  message = "Die Aussage kann empirisch wiederlegt werden.")
+         answer("Nein",  message = "Die Aussage kann empirisch wiederlegt werden und geht über den Einzelfall hinaus, somit erfüllt sie die Kriterien Poppers.")
          )
 ```
 
-## Wissenschaftliche Gütekriterien
+## Wissenschaftliche Guetekriterien
 
 Die Vorlesung $X$ konnte man auch gut ohne kontinuierliche Mitarbeit bestehen. Dies gilt (leider) nicht für diese Vorlesung.
 
 
 ```{r Guetekriterien, echo=FALSE}
 question("Welches Gütekritierium des wissenschaftlichen Schlusses *Kontinuierliche Mitarbeit ist zum Bestehen nicht erforderlich* primär verletzt?",
-         answer("Interne Validität", message = "Interne Validität wäre verletzt wenn es eine andere Erklärung geben würde."),
-         answer("Externe Validität", correct = TRUE, message = "Das Ergebnis von Vorlesung $X$ kann nicht übertragen werden.")
+         answer("Interne Validität", message = "Interne Validität wäre verletzt, wenn es eine andere Erklärung geben würde."),
+         answer("Externe Validität", correct = TRUE, message = "Das Ergebnis von Vorlesung $X$ kann nicht auf andere Vorlesungen übertragen werden.")
          )
 ```
 
 
 ## Messkriterien
 
-Angenommen eine Hochschule misst *intensive Nacharbeit* durch die Dauer, die ein Studierender im Online Campus verbringt. 
+Angenommen, eine Hochschule misst *intensive Nacharbeit* durch die Dauer, die ein Studierender im Online Campus verbringt. 
 
 ```{r Messung, echo=FALSE}
 question("Welches Gütekriterium einer Messung ist primär verletzt?",
-         answer("Genauigkeit", message = "Mangelnde Genauigkeit läge vor wenn die Zeit z.B. durch *kurz*, *lang* anstelle von z.B. Minuten gemessen werden würde."),
-         answer("Objektivität", message = "Objektivität wäre das Problem wenn zwei Messende zu unterschiedlichen Messergebnissen kommen würden."),
+         answer("Genauigkeit", message = "Mangelnde Genauigkeit läge vor, wenn die Zeit z.B. durch *kurz*, *lang* anstelle von z.B. Minuten gemessen werden würde."),
+         answer("Objektivität", message = "Objektivität wäre das Problem, wenn zwei Messende zu unterschiedlichen Messergebnissen kommen würden."),
          answer("Reliabilität", message = "Reliabilität wäre verletzt, wenn verschiedene Messinstrumente zu unterschiedlichen Messergebnissen kommen würden."),
          answer("Validität", correct = TRUE, message = "Validität ist verletzt, wenn nicht das gemessen wird, was gemessen werden soll.")         
          )
@@ -75,8 +75,8 @@ question("Welches Gütekriterium einer Messung ist primär verletzt?",
 
 ```{r Skala, echo=FALSE}
 question("Welches Skalenniveau hat die Variable *Anzahl Minuten im OC*?",
-         answer("Kategorial – nominal", message = "Nomial wäre z.B. das Device mit dem der Studierende in den OC geht."),
-         answer("Kategorial – ordinal", message = "Ordinal wäre z.B. die Platzierung eines Studierenden in einer Rangliste der Studierenden nach Ihrer Zeit im OC."),
+         answer("Kategorial – nominal", message = "Nomial wäre z.B. das Device, mit dem der Studierende in den OC geht."),
+         answer("Kategorial – ordinal", message = "Ordinal wäre z.B. die Platzierung eines Studierenden in einer Rangliste der Studierenden nach ihrer Zeit im OC."),
          answer("Numerisch – intervallskaliert", message = "Intervallskaliert wäre die Zeit, wenn z.B. die Referenzzeit des Workloads als Null definiert wird und die Abweichung zur Referenz angegeben wird."),
          answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Die Werte können unterschieden, geordnet und die Abstände verglichen werden. Außerdem gibt es einen absoluten Nullpunkt.")         
          )
