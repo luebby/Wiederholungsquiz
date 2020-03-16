@@ -24,7 +24,7 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 Es gelte: *Studierende, die die Vorlesung aktiv nacharbeiten, bestehen die Klausur*.
 
-Susi arbeit aktiv nach und folgert daraus, dass sie die Klausur besteht.
+Susi arbeitet aktiv nach und folgert daraus, dass sie die Klausur besteht.
 
 ```{r Schluss, echo=FALSE}
 question("Welche wissenschaftliche Schlussart liegt vor?",
@@ -44,13 +44,13 @@ question("Ist die Aussage *Studierende, die die Vorlesung aktiv nacharbeiten, be
          )
 ```
 
-## Wissenschaftliche Guetekriterien
+## Wissenschaftliche Gütekriterien
 
 Die Vorlesung $X$ konnte man auch gut ohne kontinuierliche Mitarbeit bestehen. Dies gilt (leider) nicht für diese Vorlesung.
 
 
 ```{r Guetekriterien, echo=FALSE}
-question("Welches Gütekritierium des wissenschaftlichen Schlusses *Kontinuierliche Mitarbeit ist zum Bestehen nicht erforderlich* primär verletzt?",
+question("Welches Gütekritierium des wissenschaftlichen Schlusses *Kontinuierliche Mitarbeit ist zum Bestehen nicht erforderlich* ist primär verletzt?",
          answer("Interne Validität", message = "Interne Validität wäre verletzt, wenn es eine andere Erklärung geben würde."),
          answer("Externe Validität", correct = TRUE, message = "Das Ergebnis von Vorlesung $X$ kann nicht auf andere Vorlesungen übertragen werden.")
          )
