@@ -30,7 +30,7 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Explorative Datenanalyse
 
 
-## Guetekriterien
+## Gütekriterien
 
 ```{r Kriterien, echo=FALSE}
 question("Welches Gütekritierium empirischer Forschung kann durch eine zufällige Zuordnung im Experiment positiv beeinflusst werden?",
@@ -63,8 +63,8 @@ head(B2run)
 question("Welches Skalenniveau hat die Laufzeit (`zeit`)?",
          answer("Kategorial – nominal", message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
          answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
-         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände sind vergleichbar. Der Nullpunkt ist aber willkürlich."),
-         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")         
+         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
+         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")         
          )
 ```
 
