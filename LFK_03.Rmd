@@ -24,7 +24,7 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Explorative Datenanalyse: Analyse kategorialer Daten
 
 
-## Guetekriterien
+## Gütekriterien
 
 ```{r Kriterien, echo=FALSE}
 question("Welches Gütekritierium empirischer Forschung kann durch eine zufällige Stichprobe positiv beeinflusst werden?",
