@@ -61,8 +61,8 @@ mtcars.de <- mtcars %>%
 ```
 
 ```{r Skala, echo=FALSE}
-question("Welches Skalenniveau hat die Getriebe (`getriebe`)?",
-         answer("Kategorial – nominal", correct = TRUE, message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
+question("Welches Skalenniveau hat die Variable Getriebe (`getriebe`)?",
+         answer("Kategorial – nominal", correct = TRUE, message = "Für nominales Skalenniveau können die Werte nur unterschieden werden."),
          answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
          answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
          answer("Numerisch – verhältnisskaliert", message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")
@@ -104,10 +104,10 @@ summary(erg.lm)
 ```
 
 ```{r Interpretation, echo=FALSE}
-question("Welche Fahrzeuge haben im Modell, bei gegebenen Gewicht, im Mittelwert einen geringeren Spritverbrauch?",
-         answer("Autos mit Automatikgetriebe.", correct = TRUE, message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
-         answer("Autos mit Schaltgetriebe.", message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
-         answer("Beide gleich.",  message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt.")
+question("Welche Fahrzeuge haben im Modell, bei gegebenem Gewicht, im Mittelwert einen geringeren Spritverbrauch?",
+         answer("Autos mit Automatikgetriebe.", correct = TRUE, message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegebenem Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
+         answer("Autos mit Schaltgetriebe.", message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegebenem Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
+         answer("Beide gleich.",  message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegebenem Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt.")
          )
 ```
 
@@ -119,12 +119,12 @@ $$\text{lp100km}_i=\beta_0 + \beta_1 \cdot {kg}_i+\beta_2\cdot \text{getriebe}_i
 
 lautet die geschätzte Modellgleichung:
 
-$$\widehat{\text{lp100km}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm)[2],4)` \cdot {kg}_i + `r round(coef(erg.lm)[3],4)`\cdot\begin{cases}1, \,\text{i hat Schaltgetriebe} \\ 0, \,\text{i hat kein Schaltgetriebe}\end{cases}.$$
+$$\widehat{\text{lp100km}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm)[2],4)` \cdot {kg}_i + `r round(coef(erg.lm)[3],4)`\cdot\begin{cases}1, \,\text{i hat Schaltgetriebe} \\ 0, \,\text{i hat kein Schaltgetriebe}\end{cases}$$
 
 ```{r H0, echo=FALSE}
 question("Was gilt, wenn im Modell die Schaltungsart keinen Zusammenhang mit dem Spritverbrauch hat?",
          answer("$\\beta_2=0$.", correct = TRUE, message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
-         answer("$\\beta_2 \\neq 0$", message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
+         answer("$\\beta_2 \\neq 0$.", message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
          answer("$\\hat{\\beta}_2=0$.",  message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
          answer("$\\hat{\\beta}_2 \\neq 0$.",  message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht.")
          
