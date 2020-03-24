@@ -71,7 +71,7 @@ D.h.:
 - $\text{kg}= 0.45359 \cdot \text{wt} \cdot 1000$
 
 ```{r Skala, echo=FALSE}
-question("Welches Skalenniveau hat die Spritverbrauch (`lp100km`)?",
+question("Welches Skalenniveau hat der Spritverbrauch (`lp100km`)?",
          answer("Kategorial – nominal", message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
          answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
          answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
@@ -116,7 +116,7 @@ question("Was gilt hier für $r_{y,x}$?",
 
 ## Lineare Regression
 
-Innerhalb des lineare Modells
+Innerhalb des linearen Modells
 
 $$\text{lp100km}_i=\beta_0 + \beta_1 \cdot {kg}_i+\epsilon_i$$
 
