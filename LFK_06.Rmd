@@ -1,0 +1,170 @@
+---
+title: "6. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+data(mtcars)
+
+mtcars.de <- mtcars %>%
+  mutate(lp100km = 1/mpg * 235.2145833) %>%
+  mutate(kg = 0.45359 * wt * 1000)
+
+erg.lm <- lm(lp100km ~ kg, data = mtcars.de)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Explorative Datenanalyse
+
+- Lineare Regression
+
+
+## Experiment
+
+Eine randomisierte Stichprobe kann einen unverzerrten Schluss auf die Population ermöglichen, ein randomisiertes Experiment einen Kausalschluss (*RCT* (englisch): randomized controlled trial). Dabei wird zufällig ausgewählt, welcher Beobachtung welcher Wert zugewiesen wird.
+
+```{r Experiment, echo=FALSE}
+question("Welcher Variable wird dabei der Wert zugewiesen?",
+         answer("Der unabhängigen Variable $x$.", correct = TRUE,  message = "Die Zuordnung zur jeweiligen *Behandlung* erfolgt zufällig, da der Zusammenhang $x \\rightarrow y$ untersucht werden soll."), 
+         answer("Der abhängigen Variable $y$.",  message = "Die Zuordnung zur jeweiligen *Behandlung* erfolgt zufällig, da der Zusammenhang $x \\rightarrow y$ untersucht werden soll.")
+         )
+```
+
+## Zusammenhang Gewicht und Spritverbrauch
+
+Der `R` interne Datensatz `mtcars` enthält Kennzahlen von Automobilen aus dem Jahr 1974.
+
+Vorbereitungen:
+
+```{r}
+# Paket laden
+library(mosaic)
+# Daten einlesen
+data(mtcars)
+```
+
+Für die Analyse des Zusammenhanges zwischen Gewicht und Spritverbrauch sind die Variablen `mpg` (*Miles/(US) gallon*) und `wt` (*Weight (1000 lbs)*) relevant.
+
+Diese werden in die in Deutschland üblichen Einheiten *Liter auf 100 km* (`lp100km`) und *Kilogramm* (`kg`) umgerechnet:
+
+```{r}
+mtcars.de <- mtcars %>%
+  mutate(lp100km = 1/mpg * 235.2145833) %>%
+  mutate(kg = 0.45359 * wt * 1000)
+```
+
+D.h.:
+
+- $\text{l/100km} = \frac{1}{\text{mpg}} \cdot 235.2145833$
+- $\text{kg}= 0.45359 \cdot \text{wt} \cdot 1000$
+
+```{r Skala, echo=FALSE}
+question("Welches Skalenniveau hat die Spritverbrauch (`lp100km`)?",
+         answer("Kategorial – nominal", message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
+         answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
+         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
+         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")
+         )
+```
+
+```{r Linearitaet, echo=FALSE}
+question("Welche der beiden Umrechnungen ist linear?",
+         answer("Die von `mpg` in `lp100km`.",  message = "Um `mpg` in `lp100km` umzurechnen wird durch `mpg` dividiert. Der Zusammenhang einer Zahl zu ihrem Kehrwert ist nicht linear, d.h., Zahl und Kehrwert liegen nicht auf einer Geraden."), 
+         answer("Die von `wt` in `kg`.",  correct = TRUE, message = "`wt` wird mit einem Faktor multipliziert, d.h., `wt` und `kg` liegen auf einer Geraden.")
+         )
+```
+
+## Explorative Datenanalyse
+
+Aus *inhaltlichen* Gründen wird entschieden, dass der Spritverbrauch `lp100km` die abhängige Variable $x$ ist, das Gewicht `kg` die unabhängige (`y`):
+
+
+```{r Streudiagramm, exercise = TRUE} 
+gf_point(lp100km ~ kg, data = mtcars.de)
+```
+
+
+Für den Korrelationskoeffizienten $r_{x,y}$ gilt:
+
+```{r}
+cor(lp100km ~ kg, data = mtcars.de)
+```
+
+Also $r_{x,y}=`r round(cor(lp100km ~ kg, data = mtcars.de),2)`$.
+
+Der Korrelationskoeffizient $r_{y,x}$, könnte über `cor(kg ~ lp100km, data = mtcars.de)` bestimmt werden.
+
+```{r Korrelation, echo=FALSE}
+question("Was gilt hier für $r_{y,x}$?",
+         answer("$r_{y,x} > r_{x,y}$.",  message = "Der Korrelationskoeffizient ist symmetrisch (siehe Formel - Kommutativgesetz). Die Rollen von $x$ und $y$ können mathematisch getauscht werden."),
+         answer("$r_{y,x} = r_{x,y}$.", correct = TRUE, message = "Der Korrelationskoeffizient ist symmetrisch (siehe Formel - Kommutativgesetz). Die Rollen von $x$ und $y$ können mathematisch getauscht werden."),
+         answer("$r_{y,x} < r_{x,y}$.",  message = "Der Korrelationskoeffizient ist symmetrisch (siehe Formel - Kommutativgesetz). Die Rollen von $x$ und $y$ können mathematisch getauscht werden.")
+         )
+```
+
+## Lineare Regression
+
+Innerhalb des lineare Modells
+
+$$\text{lp100km}_i=\beta_0 + \beta_1 \cdot {kg}_i+\epsilon_i$$
+
+können die unbekannten Koeffizienten:
+
+- Achsenabschnitt: $\beta_0$
+
+- Steigung (in Richtung der Variable `kg`): $\beta_1$
+
+über die Funktion `lm()` geschätzt werden:
+
+```{r lm, exercise = TRUE}
+lm(lp100km ~ kg, data = mtcars.de) %>%
+  summary()
+```
+
+Schreiben Sie die geschätzte Modellgleichung auf.
+
+<br>
+
+*Zum Lösungsvorschlag auf `Next Topic` klicken.*
+
+##
+
+$$\widehat{\text{lp100km}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm)[2],4)` \cdot {kg}_i$$
+
+Für folgende Automobile sei das Gewicht bekannt:
+
+```{r echo=FALSE}
+mtcars.de %>%
+  head(n=3) %>%
+  mutate(Auto = c("A", "B", "C")) %>%
+  select(Auto, kg) %>%
+  kable()
+```
+
+```{r Interpretation, echo=FALSE}
+question("Für welches Auto erwarten Sie den höchsten Spritverbrauch?",
+         answer("A.",  message = "Die geschätzte Steigung $\\hat{\\beta}_1$ ist positiv, d.h., je größer $x$ (das Gewicht) desto höher ist der modellierte Spritverbrauch ($y$)."),
+         answer("B.",  correct = TRUE, message = "Die geschätzte Steigung $\\hat{\\beta}_1$ ist positiv, d.h., je größer $x$ (das Gewicht) desto höher ist der modellierte Spritverbrauch ($y$)."),
+         answer("C.",  message = "Die geschätzte Steigung $\\hat{\\beta}_1$ ist positiv, d.h., je größer $x$ (das Gewicht) desto höher ist der modellierte Spritverbrauch ($y$).")
+         )
+```
+
+```{r Bestimmtheitsmass, echo=FALSE}
+question("Stimmt die Aussage: Für diese Stichprobe kann noch nicht einmal die Hälfte der Variation des Spritverbrauchs durch das Gewicht modelliert werden.",
+         answer("Ja.",  message = "Für das Bestimmtheitsmaß $R^2$ gilt hier: $R^2=0.79$ (`Multiple R-squared`), d.h., ca. 80% der Variation kann modelliert werden."),
+         answer("Nein.",  correct = TRUE, message = "Für das Bestimmtheitsmaß $R^2$ gilt hier: $R^2=0.79$ (`Multiple R-squared`), d.h., ca. 80% der Variation kann modelliert werden."),
+         answer("Kann nicht beantwortet werden.",  message = "Für das Bestimmtheitsmaß $R^2$ gilt hier: $R^2=0.79$ (`Multiple R-squared`), d.h., ca. 80% der Variation kann modelliert werden.")
+         )
+```
