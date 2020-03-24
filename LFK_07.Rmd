@@ -1,0 +1,158 @@
+---
+title: "7. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+data(mtcars)
+
+mtcars.de <- mtcars %>%
+  mutate(lp100km = 1/mpg * 235.2145833) %>%
+  mutate(kg = 0.45359 * wt * 1000) %>%
+  mutate(getriebe = case_when(am == 0 ~ "Automatik",
+                              am == 1 ~ "Schaltung")) %>%
+  select(lp100km, kg, getriebe)
+  
+
+erg.lm <- lm(lp100km ~ kg + getriebe , data = mtcars.de)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Explorative Datenanalyse
+
+- Lineare Regression
+
+
+
+## Zusammenhang Gewicht, Getriebe und Spritverbrauch
+
+Der `R` interne Datensatz `mtcars` enthält Kennzahlen von Automobilen aus dem Jahr 1974.
+
+Vorbereitungen:
+
+```{r}
+# Paket laden
+library(mosaic)
+# Daten einlesen
+data(mtcars)
+```
+
+Innerhalb der **Vorverarbeitung** werden die Variablen transformiert und umkodiert (`case_when()`):
+
+```{r}
+mtcars.de <- mtcars %>%
+  mutate(lp100km = 1/mpg * 235.2145833) %>%
+  mutate(kg = 0.45359 * wt * 1000) %>%
+  mutate(getriebe = case_when(am == 0 ~ "Automatik",
+                              am == 1 ~ "Schaltung")) %>%
+  select(lp100km, kg, getriebe)
+```
+
+```{r Skala, echo=FALSE}
+question("Welches Skalenniveau hat die Getriebe (`getriebe`)?",
+         answer("Kategorial – nominal", correct = TRUE, message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
+         answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
+         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
+         answer("Numerisch – verhältnisskaliert", message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")
+         )
+```
+
+
+## Explorative Datenanalyse
+
+Ein Streudiagramm der Variablen Spritverbrauch und Gewicht, in dem die Punkte je nach Getriebeart farbig markiert wurden (`color = `) ergibt folgendes Ergebnis:
+
+
+```{r Streudiagramm} 
+gf_point(lp100km ~ kg, color = ~ getriebe, data = mtcars.de)
+```
+
+Sei das Gewicht des Autos (`kg`) die Variable $x$.
+
+
+```{r Mittelwert, echo=FALSE}
+question("Was gilt nach der Abbildung für die arithmetischen Mittelwerte des Gewichts?",
+         answer("$\\bar{x}_{\\text{Automatik}}>\\bar{x}_{\\text{Schaltung}}$.", correct = TRUE, message = "Die Beobachtungen für die `getriebe == \"Schaltung\"` gilt, sind im unteren Bereich des Gewichts (`kg`) zu finden."),
+         answer("$\\bar{x}_{\\text{Automatik}} \\approx \\bar{x}_{\\text{Schaltung}}$.", message = "Die Beobachtungen für die `getriebe == \"Schaltung\"` gilt, sind im unteren Bereich des Gewichts (`kg`) zu finden."),
+         answer("$\\bar{x}_{\\text{Automatik}}<\\bar{x}_{\\text{Schaltung}}$.",  message = "Die Beobachtungen für die `getriebe == \"Schaltung\"` gilt, sind im unteren Bereich des Gewichts (`kg`) zu finden..")
+         )
+```
+
+## Lineare Regression
+
+Das Modell
+
+$$\text{lp100km}_i=\beta_0 + \beta_1 \cdot {kg}_i+\beta_2\cdot \text{getriebe}_i + \epsilon_i$$
+
+wird über die Funktion `lm()` geschätzt:
+
+```{r lm, exercise = TRUE}
+erg.lm <- lm(lp100km ~ kg + getriebe, data = mtcars.de)
+summary(erg.lm)
+```
+
+```{r Interpretation, echo=FALSE}
+question("Welche Fahrzeuge haben im Modell, bei gegebenen Gewicht, im Mittelwert einen geringeren Spritverbrauch?",
+         answer("Autos mit Automatikgetriebe.", correct = TRUE, message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
+         answer("Autos mit Schaltgetriebe.", message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt."),
+         answer("Beide gleich.",  message = "Der geschätzte Koeffizient (`Estimate`) für die Variable `getriebe`, wenn `Schaltung == TRUE` ist, ist größer als Null. D.h., bei gegeben das Gewicht (`kg`) steigt der Spritverbrauch (`lp100km`) wenn ein Schaltgetriebe vorliegt.")
+         )
+```
+
+## Inferenz in der linearen Regression
+
+Für das Modell
+
+$$\text{lp100km}_i=\beta_0 + \beta_1 \cdot {kg}_i+\beta_2\cdot \text{getriebe}_i + \epsilon_i$$
+
+lautet die geschätzte Modellgleichung:
+
+$$\widehat{\text{lp100km}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm)[2],4)` \cdot {kg}_i + `r round(coef(erg.lm)[3],4)`\cdot\begin{cases}1, \,\text{i hat Schaltgetriebe} \\ 0, \,\text{i hat kein Schaltgetriebe}\end{cases}.$$
+
+```{r H0, echo=FALSE}
+question("Was gilt, wenn im Modell die Schaltungsart keinen Zusammenhang mit dem Spritverbrauch hat?",
+         answer("$\\beta_2=0$.", correct = TRUE, message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
+         answer("$\\beta_2 \\neq 0$", message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
+         answer("$\\hat{\\beta}_2=0$.",  message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht."),
+         answer("$\\hat{\\beta}_2 \\neq 0$.",  message = "Die geschätzten Werte ($\\hat{\\beta}$) sind Werte der Stichprobe. Wenn im Modell kein Zusammenhang vorliegt, gilt $\\beta_2=0$: egal welchen Wert `getriebe` annimmt, der Wert von `lp100km` ändert sich nicht.")
+         
+         )
+```
+
+##
+
+In der Stichprobe gilt:
+
+$$\hat{\beta}_2 =  `r round(coef(erg.lm)[3],4)` \neq 0$$
+
+
+
+```{r pWert, echo=FALSE}
+question("Ist eine Stichprobe mit einem solchen Wert für $\\hat{\\beta}_2$ sehr unwahrscheinlich, wenn $\\beta_2=0$ gelten würde?",
+         answer("Ja.", message = "Der p-Wert (`Pr(>|t|)`) ist mit $0.209$ nicht besonders klein. Die Wahrscheinlichkeit, $|\\hat{\\beta}_2| \\geq |1.136|$ in einer Stichprobe zu beobachten, obwohl $\\hat{\\beta}_2=0$ gilt, liegt bei $0.209$. Dies bedeutet nicht, dass es keinen Zusammenhang gibt, wir haben aber (noch?) keine ausreichenden Belege dafür, die Annahme $\\hat{\\beta}_2=0$ zu verwerfen."),
+         answer("Nein.", correct = TRUE, message = "Der p-Wert (`Pr(>|t|)`) ist mit $0.209$ nicht besonders klein. Die Wahrscheinlichkeit, $|\\hat{\\beta}_2| \\geq |1.136|$ in einer Stichprobe zu beobachten, obwohl $\\hat{\\beta}_2=0$ gilt, liegt bei $0.209$. Dies bedeutet nicht, dass es keinen Zusammenhang gibt, wir haben aber (noch?) keine ausreichenden Belege dafür, die Annahme $\\hat{\\beta}_2=0$ zu verwerfen.")
+         )
+```
+
+## Schlussfolgerung
+
+Mit einem p-Wert von $1.47\cdot 10^{-9}$ (`Pr(>|t|)=1.47e-09` für die Variable `kg`) sind die Daten nicht kompatibel zum Modell $\beta_1=0$. 
+
+```{r Schluss, echo=FALSE}
+question("Kann rein aufgrund der Datenanalyse auf einen kausalen Zusammenhang $\\text{kg} \\rightarrow \\text{lp100km}$ geschlossen werden?",
+         answer("Ja.", message = "Es liegen die Daten einer Beobachtungsstudie vor. Ohne zusätzliche inhaltliche Argumente kann nur im Rahmen eines randomisierten Experiments ein Kausalschluss erfolgen."),
+         answer("Nein.", correct = TRUE, message = "Es liegen die Daten einer Beobachtungsstudie vor. Ohne zusätzliche inhaltliche Argumente kann nur im Rahmen eines randomisierten Experiments ein Kausalschluss erfolgen.")
+         )
+```
