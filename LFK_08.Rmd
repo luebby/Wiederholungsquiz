@@ -33,9 +33,9 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 ## Kundenzufriedenheit
 
-Womit hängt die (generelle Zufriedenheit) mit einem Freizeitpark zusammen?
+Womit hängt die (Gesamt-) Zufriedenheit mit einem Freizeitpark zusammen?
 
-*Hinweis*: Das Beispiel orientiert sich an den Folienunterlagen von Chapman \& Feit zum Buch [*R for Marketing Research and Analytics*](http://r-marketing.r-forge.r-project.org/), Springer, 2015, siehe [http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html](http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html).
+*Hinweis*: Das Beispiel orientiert sich an den Folienunterlagen von Chapman \& Feit zum Buch [*R for Marketing Research and Analytics*](http://r-marketing.r-forge.r-project.org/), Springer (2015), siehe [http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html](http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html).
 
 Es handelt sich hier um *simulierte* Daten einer Kundenzufriedenheitsumfrage eines Freizeitparks:
 
@@ -61,7 +61,7 @@ head(Amusement)
 
 ```{r Erhebung1, echo=FALSE}
 question("Handelt es sich bei einer Kundenzufriedenheitsumfrage um ein randomisiertes Experiment?",
-         answer("Nein.", correct = TRUE, message = "In einer Umfrage werden die Beobachtungen i.d.R. nur so erhoben wie sie sind."),
+         answer("Nein.", correct = TRUE, message = "In einer Umfrage werden die Beobachtungen i. d. R. nur so erhoben wie sie sind."),
          answer("Ja.", message = "Innerhalb eines randomisierten Experiments wird die unabhängige Variable manipuliert.")
          )
 ```
@@ -78,7 +78,7 @@ question("Wann können Sie das Ergebnis der Stichprobe unverzerrt generalisieren
 
 ## Lineare Regression
 
-Eine lineare Regression der generellen Zufriedenheit (`overall`) auf die Zufriedenheit mit den Fahrgeschäften (`rides`) und Wochenende (`weekend`) ergibt folgendes Ergebnis:
+Eine lineare Regression der Gesamtzufriedenheit (`overall`) auf die Zufriedenheit mit den Fahrgeschäften (`rides`) und Wochenende (`weekend`) ergibt folgendes Ergebnis:
 
 ```{r lm}
 # Visualisierung
@@ -91,7 +91,7 @@ summary(erg.lm)
 
 <br>
 
-In Journals u.ä. wird dasselbe Ergebnis häufig so dargestellt:
+In Journals u. ä. wird dasselbe Ergebnis häufig so dargestellt:
 
 ```{r, results='asis', message = FALSE, echo=FALSE}
 stargazer(erg.lm, header = FALSE, type='html')
@@ -105,7 +105,7 @@ Fassen Sie das Ergebnis der Analyse zusammen. Wie lauten die Forschungsfrage, di
 
 ##
 
-Kann die generelle Zufriedenheit (`overall`) linear durch die Zufriedenheit mit den Fahrgeschäften (`rides`) sowie inwieweit Wochenende ist (`weekend`) modelliert werden?
+Kann die Gesamtzufriedenheit (`overall`) linear durch die Zufriedenheit mit den Fahrgeschäften (`rides`) sowie inwieweit Wochenende ist (`weekend`) modelliert werden?
 
 Für das Modell
 
@@ -117,23 +117,23 @@ $$\widehat{\text{overall}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm
 
 Wird eine höhere Zufriedenheit mit den Fahrgeschäften beobachtet, wird auch eine höhere Gesamtzufriedenheit beobachtet (je Punkt `rides` im Mittelwert um $`r round(coef(erg.lm)[2],4)`$), am Wochenende ist diese geringer (im Mittelwert um $`r abs(round(coef(erg.lm)[3],4))`$), jeweils unter sonst gleichen Bedingungen.
 
-Bei einem $R^2=`r rsquared(erg.lm)`$ wird $`r round(rsquared(erg.lm)*100)`\,\%$ der Variation der generellen Zufriedenheit (`overall`) modelliert.
+Bei einem $R^2=`r rsquared(erg.lm)`$ wird $`r round(rsquared(erg.lm)*100)`\,\%$ der Variation der Gesamtzufriedenheit (`overall`) modelliert.
 
-Die Nullhypothese $\beta_1=0$ wird mit einem p-Wert $<2 \cdot 10^{-16}$ verworfen, $\beta_2=0$ wird mit einem p-Wert von $0.489$ nicht verworfen. Der Zusammenhang zwischen `rides` und `overvall` ist signifikant, der zwischen `weekend` und `overall` nicht - d.h. aber nicht, dass es keinen gibt!
+Die Nullhypothese $\beta_1=0$ wird mit einem p-Wert $<2 \cdot 10^{-16}$ verworfen, $\beta_2=0$ wird mit einem p-Wert von $0.489$ nicht verworfen. Der Zusammenhang zwischen `rides` und `overvall` ist signifikant, der zwischen `weekend` und `overall` nicht - das heißt aber nicht, dass es keinen gibt!
 
 
 ## Priorisierung
 
-Die Geschäftsführung ist daran interessiert, inwieweit die Zufriedenheit mit der Sauberkeit (`clean`) und Wartezeit (`wait`) mit der Zufriedenheit insgesamt (`overall`) zusammenhängen. Als mögliche Kovariablen werden dabei die Anzahl Kinder (`num.child`) und die Entfernung zum Park (`distance`) kontrolliert.
+Die Geschäftsführung ist daran interessiert, inwieweit die Zufriedenheit mit der Sauberkeit (`clean`) und Wartezeit (`wait`) mit der Gesamtzufriedenheit (`overall`) zusammenhängen. Als mögliche Kovariablen werden dabei die Anzahl Kinder (`num.child`) und die Entfernung zum Park (`distance`) kontrolliert.
 
 ```{r, results='asis', message = FALSE, echo=FALSE}
 stargazer(erglm.clean, erglm.wait, header = FALSE, type = "html")
 ```
 
 ```{r Interpretation, echo=FALSE}
-question("In diesem (simulierten) Beispiel: welche Variable scheint stärker mit der Zufriedenheit insgesamt assoziiert zu sein?",
-         answer("Die Sauberkeit.", correct = TRUE, message = "Da sowohl Sauberkeit als auch Wartezeit in der selben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer."),
-         answer("Die Wartezeit.", message = "Da sowohl Sauberkeit als auch Wartezeit in der selben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer.")
+question("In diesem (simulierten) Beispiel: welche Variable scheint stärker mit der Gesamtzufriedenheit assoziiert zu sein?",
+         answer("Die Sauberkeit.", correct = TRUE, message = "Da sowohl Sauberkeit als auch Wartezeit in derselben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer."),
+         answer("Die Wartezeit.", message = "Da sowohl Sauberkeit als auch Wartezeit in derselben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer.")
          )
 ```
 
