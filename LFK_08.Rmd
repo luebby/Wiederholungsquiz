@@ -1,0 +1,151 @@
+---
+title: "8. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+library(stargazer)
+
+#Amusement <- read.csv("http://goo.gl/HKnl74")
+Amusement <- read.csv("Amusement.csv")
+erg.lm <- lm(overall ~ rides + weekend, data = Amusement)
+
+erglm.clean <-  lm(overall ~ clean + num.child + distance, data = Amusement)
+erglm.wait <-  lm(overall ~  wait + num.child + distance, data = Amusement)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Lineare Regression
+
+
+
+## Kundenzufriedenheit
+
+Womit hängt die (generelle Zufriedenheit) mit einem Freizeitpark zusammen?
+
+*Hinweis*: Das Beispiel orientiert sich an den Folienunterlagen von Chapman \& Feit zum Buch [*R for Marketing Research and Analytics*](http://r-marketing.r-forge.r-project.org/), Springer, 2015, siehe [http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html](http://r-marketing.r-forge.r-project.org/Instructor/slides-index.html).
+
+Es handelt sich hier um *simulierte* Daten einer Kundenzufriedenheitsumfrage eines Freizeitparks:
+
+```{r, message=FALSE, eval=FALSE}
+# Paket laden
+library(mosaic)
+# Daten einlesen, "amerikanisches csv"
+Amusement <- read.csv("http://goo.gl/HKnl74")
+# Datenstruktur
+str(Amusement)
+# Erste Beobachtungen
+head(Amusement)
+```
+
+```{r, echo=FALSE}
+# Datenstruktur
+str(Amusement)
+# Erste Beobachtungen
+head(Amusement)
+```
+
+
+
+```{r Erhebung1, echo=FALSE}
+question("Handelt es sich bei einer Kundenzufriedenheitsumfrage um ein randomisiertes Experiment?",
+         answer("Nein.", correct = TRUE, message = "In einer Umfrage werden die Beobachtungen i.d.R. nur so erhoben wie sie sind."),
+         answer("Ja.", message = "Innerhalb eines randomisierten Experiments wird die unabhängige Variable manipuliert.")
+         )
+```
+
+<br>
+
+```{r Erhebung2, echo=FALSE}
+question("Wann können Sie das Ergebnis der Stichprobe unverzerrt generalisieren?",
+         answer("Wenn gleich viele zufriedene wie unzufriedene Besucher\\*innen befragt wurden.", message = "Bei einer geschichteten Stichprobe kann evtl. etwas über die Verteilung innerhalb der Schichten ausgesagt werden, aber nichts über die Verteilung der Schichten."),
+         answer("Wenn mindestens 1000 Besucher\\*innen befragt wurden.", message = "Generell sind hohe Stichprobenumfänge zu bevorzugen, sie lösen aber nicht das Problem einer potentiellen Verzerrung einer Gelegenheitsstichprobe."),
+         answer("Wenn die Befragten zufällig aus allen Besucher\\*innen ausgewählt wurden.", correct = TRUE, message = "Eine zufällige Stichprobe ermöglicht eine Generalisierung auf die zugrundeliegende Population.")
+         )
+```
+
+## Lineare Regression
+
+Eine lineare Regression der generellen Zufriedenheit (`overall`) auf die Zufriedenheit mit den Fahrgeschäften (`rides`) und Wochenende (`weekend`) ergibt folgendes Ergebnis:
+
+```{r lm}
+# Visualisierung
+gf_point(overall ~ rides, color = ~ weekend, data = Amusement)
+# Berechnung Lineare Regression
+erg.lm <- lm(overall ~ rides + weekend, data = Amusement)
+# Ergebnis Zusammenfassung
+summary(erg.lm)
+```
+
+<br>
+
+In Journals u.ä. wird dasselbe Ergebnis häufig so dargestellt:
+
+```{r, results='asis', message = FALSE, echo=FALSE}
+stargazer(erg.lm, header = FALSE, type='html')
+```
+
+<br>
+
+Fassen Sie das Ergebnis der Analyse zusammen. Wie lauten die Forschungsfrage, die Hypothesen und das vorläufige Ergebnis?
+
+*Zum Lösungsvorschlag auf `Next Topic` klicken.*
+
+##
+
+Kann die generelle Zufriedenheit (`overall`) linear durch die Zufriedenheit mit den Fahrgeschäften (`rides`) sowie inwieweit Wochenende ist (`weekend`) modelliert werden?
+
+Für das Modell
+
+$$\text{overall}_i=\beta_0 + \beta_1 \cdot \text{rides}_i+\beta_2\cdot \text{weekend}_i + \epsilon_i$$
+
+lautet die geschätzte Modellgleichung:
+
+$$\widehat{\text{overall}}_i=`r round(coef(erg.lm)[1],4)` + `r round(coef(erg.lm)[2],4)` \cdot \text{rides}_i `r round(coef(erg.lm)[3],4)`\cdot\begin{cases}1, \,\text{i ist Wochenende} \\ 0, \,\text{i ist kein Wochenende}\end{cases}$$
+
+Wird eine höhere Zufriedenheit mit den Fahrgeschäften beobachtet, wird auch eine höhere Gesamtzufriedenheit beobachtet (je Punkt `rides` im Mittelwert um $`r round(coef(erg.lm)[2],4)`$), am Wochenende ist diese geringer (im Mittelwert um $`r abs(round(coef(erg.lm)[3],4))`$), jeweils unter sonst gleichen Bedingungen.
+
+Bei einem $R^2=`r rsquared(erg.lm)`$ wird $`r round(rsquared(erg.lm)*100)`\,\%$ der Variation der generellen Zufriedenheit (`overall`) modelliert.
+
+Die Nullhypothese $\beta_1=0$ wird mit einem p-Wert $<2 \cdot 10^{-16}$ verworfen, $\beta_2=0$ wird mit einem p-Wert von $0.489$ nicht verworfen. Der Zusammenhang zwischen `rides` und `overvall` ist signifikant, der zwischen `weekend` und `overall` nicht - d.h. aber nicht, dass es keinen gibt!
+
+
+## Priorisierung
+
+Die Geschäftsführung ist daran interessiert, inwieweit die Zufriedenheit mit der Sauberkeit (`clean`) und Wartezeit (`wait`) mit der Zufriedenheit insgesamt (`overall`) zusammenhängen. Als mögliche Kovariablen werden dabei die Anzahl Kinder (`num.child`) und die Entfernung zum Park (`distance`) kontrolliert.
+
+```{r, results='asis', message = FALSE, echo=FALSE}
+stargazer(erglm.clean, erglm.wait, header = FALSE, type = "html")
+```
+
+```{r Interpretation, echo=FALSE}
+question("In diesem (simulierten) Beispiel: welche Variable scheint stärker mit der Zufriedenheit insgesamt assoziiert zu sein?",
+         answer("Die Sauberkeit.", correct = TRUE, message = "Da sowohl Sauberkeit als auch Wartezeit in der selben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer."),
+         answer("Die Wartezeit.", message = "Da sowohl Sauberkeit als auch Wartezeit in der selben Einheit gemessen werden, können die geschätzten Koeffizienten $\\hat{\\beta}$ verglichen werden, und der ist bei der Sauberkeit größer. Auch ist $\\frac{\\hat{\\beta}}{se}$ größer und damit der p-Wert kleiner. Auch das Bestimmtheitsmaß $R^2$ ist bei `clean` größer.")
+         )
+```
+
+<br>
+
+```{r Kausal, echo=FALSE}
+question("Kann rein aus dem Ergebnis einer Regression ein Kausalzusammenhang abgeleitet werden?",
+         answer("Ja.", message = "Eine Beobachtungsstudie erlaubt keine unmittelbaren Kausalschlüsse."),
+         answer("Bei einem signifikanten Koeffizientent.", message = "Eine Beobachtungsstudie erlaubt keine unmittelbaren Kausalschlüsse. *Signifikanz* sagt nur, dass der geschätzte Koeffizient unwahrscheinlich ist, wenn im Modell der Population kein linearer Zusammenhang vorliegt."),
+          answer("Nein.", correct = TRUE, message = "Eine Beobachtungsstudie erlaubt keine unmittelbaren Kausalschlüsse.")
+         )
+```
+
+
+
