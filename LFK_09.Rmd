@@ -36,10 +36,13 @@ Wie kann der Preis eines Diamanten modelliert werden?
 ```{r, message=FALSE}
 # Paket laden
 library(mosaic)
+
 # Daten einlesen
 data(diamonds)
+
 # Datenstruktur
 str(diamonds)
+
 # Erste Beobachtungen
 head(diamonds)
 ```
@@ -55,7 +58,9 @@ question("Welches Skalenniveau hat der Preis (`price`)?",
          )
 ```
 
-Datenvorerarbeitung: relevante Beobachtungen (`filter()`, hier: `|` entspricht einem logischem *oder* ($\vee$)) und Variablen (`select()`) auswählen, Farbcode *übersetzen* (`mutate()`, bedingt `case_when()`):
+Datenvorverarbeitung:  
+ relevante Beobachtungen (`filter()` -- hier entspricht: `|` einem logischen *oder* ($\vee$)) und Variablen (`select()`) auswählen; 
+ Farbcode *übersetzen* (mit `mutate()` und bedingter Zuordnung `case_when()`):
 
 ```{r}
 my.diamonds <- diamonds %>%
@@ -68,25 +73,27 @@ my.diamonds <- diamonds %>%
 
 ```{r n, echo=FALSE}
 question("Welcher Datensatz wird mehr Beobachtungen ($n$) enthalten?",
-         answer("`diamonds`", correct = TRUE, message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
-         answer("`my.diamonds`", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
-          answer("Beide gleich.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
-         answer("Kann nicht beantwortet werden.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`.")
+         answer("`diamonds`", correct = TRUE, message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds) < nrow(diamonds)`."),
+         answer("`my.diamonds`", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds) < nrow(diamonds)`."),
+          answer("Beide gleich.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds) < nrow(diamonds)`."),
+         answer("Kann nicht beantwortet werden.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds) < nrow(diamonds)`.")
          )
 ```
 
 ## Variablentransformation
 
-Viele Zusammenhänge sind nicht linear, daher werden hier verschiedene Zusammenhänge, häufig z.B. auch Logarithmus, `log()`, betrachtet:
+Viele Zusammenhänge sind nicht linear, daher werden hier verschiedene Zusammenhänge, häufig z. B. auch der Logarithmus `log()`, oder aber auch die Wurzeltransformation $\sqrt{}$ betrachtet -- in R: `sqrt()`:
 
 ```{r, message=FALSE}
 # Abbildungen erzeugen
 p1 <- gf_point(price ~ carat, color = ~ color, data = my.diamonds) %>%
-  gf_labs(title = "Ohne Transformation \n des Preises")
+        gf_labs(title = "Ohne Transformation \n des Preises")
 p2 <- gf_point(sqrt(price) ~ carat, color = ~ color, data = my.diamonds) %>%
-  gf_labs(title = "Wurzeltransformation \n des Preises")
+        gf_labs(title = "Wurzeltransformation \n des Preises")
+
 # Paket laden
 library(gridExtra)
+
 # Abbildungen nebeneinander arrangieren
 grid.arrange(p1, p2, ncol = 2)
 ```
@@ -104,7 +111,7 @@ Eine *andere* Alternative wäre das Modell: $$\text{price}_i=\beta_0 + \beta_1\c
 
 ## Lineare Regression
 
-Eine Lineare Regression der Quadratwurzel des Preises (bei Prognose (oder Interpretation): Rücktransformation nicht vergessen) auf Karat und Farbe ergibt folgendes Ergebnis:
+Eine Lineare Regression der Quadratwurzel des Preises (Nicht vergessen: Rücktransformation für Prognose oder Interpretation notwendig!) auf Karat und Farbe ergibt folgendes Ergebnis:
 
 ```{r reg-setup, echo=FALSE}
 my.diamonds <- my.diamonds %>%
