@@ -1,0 +1,194 @@
+---
+title: "9. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+library(gridExtra)
+data(diamonds)
+
+my.diamonds <- diamonds %>%
+  filter(color == "D" | color == "J") %>%
+  filter(carat <= 2) %>%
+  select(color, carat, price) %>%
+  mutate(color = case_when(color == "D" ~ "best",
+                           color == "J" ~ "worst"))
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Lineare Regression
+
+
+## Diamantenpreis
+
+Wie kann der Preis eines Diamanten modelliert werden?
+
+```{r, message=FALSE}
+# Paket laden
+library(mosaic)
+# Daten einlesen
+data(diamonds)
+# Datenstruktur
+str(diamonds)
+# Erste Beobachtungen
+head(diamonds)
+```
+
+Für uns relevant: `carat`, `color` und `price`, wobei nur die Diamanten mit der besten Farbe (`D`) und der schlechtesten (`J`) und mit maximal 2 Karat ausgewählt werden.
+
+```{r Skala, echo=FALSE}
+question("Welches Skalenniveau hat der Preis (`price`)?",
+         answer("Kategorial – nominal", message = "Für nominales Skalenniveau könnten die Werte nur unterschieden werden."),
+         answer("Kategorial – ordinal", message = "Für ordinales Skalenniveau könnten die Werte nur unterschieden und in eine Reihenfolge gebracht werden."),
+         answer("Numerisch – intervallskaliert", message = "Für eine Intervallskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Der Nullpunkt ist aber willkürlich."),
+         answer("Numerisch – verhältnisskaliert", correct = TRUE, message = "Für eine Verhältnisskalierung müssen die Werte in eine Reihenfolge gebracht werden können und die Abstände vergleichbar sein. Auch ist ein absoluter Nullpunkt (inhaltlich) gegeben und die Quotienten sind (inhaltlich) interpretierbar.")         
+         )
+```
+
+Datenvorerarbeitung: relevante Beobachtungen (`filter()`, hier: `|` entspricht einem logischem *oder* ($\vee$)) und Variablen (`select()`) auswählen, Farbcode *übersetzen* (`mutate()`, bedingt `case_when()`):
+
+```{r}
+my.diamonds <- diamonds %>%
+  filter(color == "D" | color == "J") %>%
+  filter(carat <= 2) %>%
+  select(color, carat, price) %>%
+  mutate(color = case_when(color == "D" ~ "best",
+                           color == "J" ~ "worst"))
+```
+
+```{r n, echo=FALSE}
+question("Welcher Datensatz wird mehr Beobachtungen ($n$) enthalten?",
+         answer("`diamonds`", correct = TRUE, message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
+         answer("`my.diamonds`", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
+          answer("Beide gleich.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`."),
+         answer("Kann nicht beantwortet werden.", message = "Der Datensatz `my.diamonds` ist aufgrund der Beobachtungsauswahl über `filter()` ein Teildatensatz von `diamonds`, daher gilt `nrow(my.diamonds)<nrow(diamonds)`.")
+         )
+```
+
+## Variablentransformation
+
+Viele Zusammenhänge sind nicht linear, daher werden hier verschiedene Zusammenhänge, häufig z.B. auch Logarithmus, `log()`, betrachtet:
+
+```{r, message=FALSE}
+# Abbildungen erzeugen
+p1 <- gf_point(price ~ carat, color = ~ color, data = my.diamonds) %>%
+  gf_labs(title = "Ohne Transformation \n des Preises")
+p2 <- gf_point(sqrt(price) ~ carat, color = ~ color, data = my.diamonds) %>%
+  gf_labs(title = "Wurzeltransformation \n des Preises")
+# Paket laden
+library(gridExtra)
+# Abbildungen nebeneinander arrangieren
+grid.arrange(p1, p2, ncol = 2)
+```
+
+```{r trafo, echo=FALSE}
+question("Welches Modell scheint angemessener zu sein?",
+         answer("$\\text{price}_i=\\beta_0 + \\beta_1\\cdot \\text{carat}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\sqrt{\\text{price}}$ und $\\text{carat}$ aus."),
+         answer("$\\sqrt{\\text{price}}_i=\\beta_0 + \\beta_1\\cdot \\text{carat}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", correct=TRUE, message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\sqrt{\\text{price}}$ und $\\text{carat}$ aus.")
+         )
+```
+
+##
+
+Eine *andere* Alternative wäre das Modell: $$\text{price}_i=\beta_0 + \beta_1\cdot \text{carat}^2_i+\beta_2\cdot \text{color}_i+\epsilon_i$$
+
+## Lineare Regression
+
+Eine Lineare Regression der Quadratwurzel des Preises (bei Prognose (oder Interpretation): Rücktransformation nicht vergessen) auf Karat und Farbe ergibt folgendes Ergebnis:
+
+```{r reg-setup, echo=FALSE}
+my.diamonds <- my.diamonds %>%
+  mutate(sqrt.price = sqrt(price))
+
+erg.lm <- lm(sqrt.price ~ carat + color, data = my.diamonds)
+```
+
+```{r reg}
+my.diamonds <- my.diamonds %>%
+  mutate(sqrt.price = sqrt(price))
+
+erg.lm <- lm(sqrt.price ~ carat + color, data = my.diamonds)
+summary(erg.lm)
+```
+
+```{r r2, echo=FALSE}
+question("Stimmt die Aussage: *Mehr als die Hälfte der Variation der Quadratwurzel des Preises kann hier modelliert werden*?",
+         answer("Ja.", correct = TRUE, message = "$R^2>0.5$ (`Multiple R-squared:  0.8978`)."),
+         answer("Nein.", message = "$R^2>0.5$ (`Multiple R-squared:  0.8978`).")
+         )
+```
+
+## Inferenz in der Regression
+
+Der geschätzte Koeffizient $\hat{\beta}_1=`r round(coef(erg.lm)[2],2)`$ ist das Ergebnis *dieser* Stichprobe: eine andere Stichrprobe hätte evtl. ein anderes Ergebnis ergeben. Diese Unsicherheit kann über Bootstrapping simuliert werden:
+
+```{r Boot}
+# Zufallszahlengenerator setzen
+set.seed(1896)
+
+# Resampling-Verteilung bestimmen 
+Bootvtlg <- do(1000) * 
+  lm(sqrt.price ~ carat + color, data = resample(my.diamonds))
+
+# Histogramm der Bootstrap Verteilung des geschätzten Koeffizienten
+gf_histogram( ~ carat, data = Bootvtlg)
+
+# 95% Resampling Intervall
+quantile( ~ carat, probs = c(0.025, 0.975), data = Bootvtlg)
+```
+
+```{r ki, echo=FALSE}
+question("Stimmt die Aussage: *Auch ein Wert von ${\\beta}_1=0.5$ wäre mit den Daten kompatibel*?",
+         answer("Ja.", message = "${\\beta}_1=0.5$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt."),
+         answer("Nein.", correct = TRUE, message = "${\\beta}_1=0.5$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt.")
+         )
+```
+
+##
+
+```{r h0, echo=FALSE}
+question("Welche Aussage stimmt, wenn man annimmt, dass es theoretisch keinen Zusammenhang zwischen der Farbe und der Quadratwurzel des Preises gibt?",
+         answer("$\\hat{\\beta}_2=0$", message = "Der geschätzte Wert der Stichprobe ($\\hat{\\beta}$) ist bekannt. Hypothesen beziehen sich immer auf das Modell."),
+         answer("$\\hat{\\beta}_2 \\neq 0$", message = "Der geschätzte Wert der Stichprobe ($\\hat{\\beta}$) ist bekannt. Hypothesen beziehen sich immer auf das Modell."),
+         answer("${\\beta}_2 = 0$", correct = TRUE, message = "Hypothesen beziehen sich auf das Modell, und die Nullhypothese lautet i. d. R. *kein* Zusammenhang."), 
+         answer("${\\beta}_2 \\neq 0$", message = "Hypothesen beziehen sich auf das Modell, und die Nullhypothese lautet i. d. R. *kein* Zusammenhang.")
+         )
+```
+
+Simulation der Verteilung *wenn es keinen Zusammenhang* zwischen Farbe und Quadratwurzel des Preises gäbe:
+
+```{r sim0}
+# Zufallszahlengenerator setzen
+set.seed(1896)
+
+# Simulation Verteilung unter Annahme kein Zusammenhang 
+Nullvtlg <- do(1000) * 
+  lm(sqrt.price ~ carat + shuffle(color), data = my.diamonds)
+
+# Histogramm der Verteilung des geschätzten Koeffizienten unter der Annahme
+gf_histogram( ~ colorworst, data = Nullvtlg)
+
+# 95% Intervall
+quantile( ~ colorworst, probs = c(0.025, 0.975), data = Nullvtlg)
+```
+
+Für die vorliegende Stichprobe ergibt sich:
+
+$$\hat{\beta}_2=`r round(coef(erg.lm)[3],2)`$$
+
+```{r hop, echo=FALSE}
+question("Stimmt die Aussage: *Der geschätzte Koeffizient $\\hat{\\beta}_2$ ist mit dem Modell ${\\beta}_2=0$ kompatibel*?",
+         answer("Ja.", message = "In keiner der Simulationen unter der Annahme *kein Zusammenhang* wurde ein so großer Zusammenhang wie der in der Stichprobe vorhergesagt."),
+         answer("Nein.", correct = TRUE, message = "In keiner der Simulationen unter der Annahme *kein Zusammenhang* wurde ein so großer Zusammenhang wie der in der Stichprobe vorhergesagt.")
+         )
+```
