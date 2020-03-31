@@ -32,11 +32,11 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 ## Motivation
 
-Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivational orientation on creative writers*. Journal of personality and social psychology, 48(2), 393, wird ein Kreativitässcore (`Score`)  und die Motivation (`Treatment`, extrinsisch (`Extrinsic`) bzw. intrinsisch (`Intrinsic`)) analysiert. Dabei erhielten die Teilnehmeden vor der Kreativitätsmessung zufällig zugeordnet einen Fragebogen, der die jeweilige Motivation fokussierte. 
+Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivational orientation on creative writers*. Journal of personality and social psychology, 48(2), 393, wird ein Kreativitässcore (`Score`)  und die Motivation (`Treatment`), extrinsisch (`Extrinsic`) bzw. intrinsisch (`Intrinsic`) analysiert. Dabei erhielten die Teilnehmenden vor der Kreativitätsmessung zufällig zugeordnet einen Fragebogen, der die jeweilige Motivation fokussierte. 
 
 <br>
 
-Vor der Behandlung, d.h. der zufälligen Zuordnung zu den beiden Gruppen, extrinsischer oder intrinsicher Motivation, wurde ein Vorab-Kreativitätsscore ermittelt.
+Vor der Behandlung, d. h. der zufälligen Zuordnung zu den beiden Gruppen, extrinsischer oder intrinsicher Motivation, wurde ein Vorab-Kreativitätsscore ermittelt.
 
 ```{r Datenerhebung, echo=FALSE}
 question("Welche Aussage stimmt?",
@@ -47,7 +47,7 @@ question("Welche Aussage stimmt?",
 
 ## Explorative Datenanalyse
 
-Für die Verteilung des Kreativitässcores (nach der Behandlung) ergibt sich für die extrinsisch motivierten folgendes Bild:
+Für die Verteilung des Kreativitässcores (nach der Behandlung) ergibt sich für die **extrinsisch** motivierten folgendes Bild:
 
 ```{r}
 gf_histogram( ~ Score, data = Extrinsic,
@@ -75,7 +75,7 @@ question("Welche schreibweise ist korrekt?",
          )
 ```
 
-Der Standardfehler $se$ ist die Standardabweichung der Schätzung, d.h. er beschreibt die Variation der Schätzung bei zufälligen Stichproben.
+Der Standardfehler $se$ ist die Standardabweichung der Schätzung, d. h. er beschreibt die Variation der Schätzung bei zufälligen Stichproben.
 
 ```{r se, echo=FALSE}
 question("Stimmt die Aussage: *Unter sonst gleichen Umständen fällt der Standardfehler $se$ mit steigender Anzahl $n$ an Beobachtungen*?",
