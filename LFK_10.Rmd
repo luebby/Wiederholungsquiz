@@ -1,0 +1,85 @@
+---
+title: "10. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(Sleuth3)
+library(knitr)
+data("case0101", package = "Sleuth3")
+Motivation <- case0101
+
+Extrinsic <- Motivation %>%
+  filter(Treatment == "Extrinsic")
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Explorative Datenanalyse
+
+- Inferenz (Punktschätzung)
+
+
+## Motivation
+
+Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivational orientation on creative writers*. Journal of personality and social psychology, 48(2), 393, wird ein Kreativitässcore (`Score`)  und die Motivation (`Treatment`, extrinsisch (`Extrinsic`) bzw. intrinsisch (`Intrinsic`)) analysiert. Dabei erhielten die Teilnehmeden vor der Kreativitätsmessung zufällig zugeordnet einen Fragebogen, der die jeweilige Motivation fokussierte. 
+
+<br>
+
+Vor der Behandlung, d.h. der zufälligen Zuordnung zu den beiden Gruppen, extrinsischer oder intrinsicher Motivation, wurde ein Vorab-Kreativitätsscore ermittelt.
+
+```{r Datenerhebung, echo=FALSE}
+question("Welche Aussage stimmt?",
+         answer("Es gibt Grund zur Annahme, dass die Kreativität in beiden Gruppen annährend identisch verteilt ist.", correct = TRUE, message = "Da die Zuordnug der Teilnehmer*innen zu den Behandlungen extrinsisch bzw. intrinsisch zufällig erfolgte, sollte der Vorab-Kreativitätsscore in beiden Gruppen ähnlich verteilt sein."),
+         answer("Es gibt keinen Grund zur Annahme, dass die Kreativität in beiden Gruppen annährend identisch verteilt ist.", message = "Da die Zuordnug der Teilnehmer*innen zu den Behandlungen extrinsisch bzw. intrinsisch zufällig erfolgte, sollte der Vorab-Kreativitätsscore in beiden Gruppen ähnlich verteilt sein.")       
+         )
+```
+
+## Explorative Datenanalyse
+
+Für die Verteilung des Kreativitässcores (nach der Behandlung) ergibt sich für die extrinsisch motivierten folgendes Bild:
+
+```{r}
+gf_histogram( ~ Score, data = Extrinsic,
+              binwidth = 3, center = 1.5) %>%
+  gf_lims(x=c(0,30))
+```
+
+```{r Verteilung, echo=FALSE}
+question("Stimmt die Aussage: *Der Kreativitässcore ist hier näherungsweise normalverteilt*?",
+         answer("Ja.", message = "Im Histogramm kann man eine unimodale, aber linksschiefe Verteilung erkennen."),
+         answer("Nein.", correct = TRUE, message = "Im Histogramm kann man eine unimodale, aber linksschiefe Verteilung erkennen.")       
+         )
+```
+
+## Schätzung
+
+Der Mittelwert der Stichprobe, $\bar{x}$ liegt bei `r round(mean( ~ Score, data = Extrinsic),1)` bei einer Standardabweichung $sd$ von `r round(sd( ~ Score, data = Extrinsic),1)`.
+
+```{r Punkt, echo=FALSE}
+question("Welche schreibweise ist korrekt?",
+         answer("$\\mu=15.7$", message = "Die Werte der Stichprobe können als *Punktschätzer* für die entsprechenden Werte der Population verwendet werden. Sie variieren aber mit der Stichprobe und sind i. d. R. $\\neq$ den Wert der Population."),
+         answer("$\\hat{\\mu}=15.7$", correct = TRUE, message = "Die Werte der Stichprobe können als *Punktschätzer* für die entsprechenden Werte der Population verwendet werden. Sie variieren aber mit der Stichprobe und sind i. d. R. $\\neq$ den Wert der Population."),
+         answer("$\\pi=15.7$", message = "Die Werte der Stichprobe können als *Punktschätzer* für die entsprechenden Werte der Population verwendet werden. Sie variieren aber mit der Stichprobe und sind i. d. R. $\\neq$ den Wert der Population. $\\pi$ wird als Symbol für Anteile (in der Population) verwendet (bei kategorialen Daten), $\\mu$ für Mittelwerte bei numerischen Daten."),
+         answer("$\\hat{\\pi}=15.7$", message = "Die Werte der Stichprobe können als *Punktschätzer* für die entsprechenden Werte der Population verwendet werden. Sie variieren aber mit der Stichprobe und sind i. d. R. $\\neq$ den Wert der Population. $\\pi$ wird als Symbol für Anteile (in der Population) verwendet (bei kategorialen Daten), $\\mu$ für Mittelwerte bei numerischen Daten.")
+         )
+```
+
+Der Standardfehler $se$ ist die Standardabweichung der Schätzung, d.h. er beschreibt die Variation der Schätzung bei zufälligen Stichproben.
+
+```{r se, echo=FALSE}
+question("Stimmt die Aussage: *Unter sonst gleichen Umständen fällt der Standardfehler $se$ mit steigender Anzahl $n$ an Beobachtungen*?",
+         answer("Ja.", correct = TRUE, message = "Je mehr Beobachtungen zur Schätzung herangezogen werden, desto kleiner ist die Variation der Schätzung."),
+         answer("Nein.", message = "Je mehr Beobachtungen zur Schätzung herangezogen werden, desto kleiner ist die Variation der Schätzung.")       
+         )
+```
