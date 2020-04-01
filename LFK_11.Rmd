@@ -35,13 +35,6 @@ Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivatio
 
 Vor der Behandlung, d. h. der zufälligen Zuordnung zu den beiden Gruppen, extrinsischer oder intrinsicher Motivation, wurde ein Vorab-Kreativitätsscore ermittelt.
 
-```{r, message=FALSE}
-library(mosaic)
-str(Motivation)
-head(Motivation)
-```
-
-
 Violonplot mit Mittelwert:
 
 ```{r, message=FALSE}
