@@ -1,0 +1,97 @@
+---
+title: "13. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+library(nycflights13)
+
+set.seed(1896)
+Flights <- flights %>%
+  select(month, origin, dep_delay, distance) %>%
+  na.omit() %>%
+  sample_n(size = 1000) %>%
+  mutate(verspaetet = factor(case_when(dep_delay > 0 ~ "ja",
+                                       dep_delay <=0 ~ "nein"), levels = c("nein", "ja"))) %>%
+  mutate(jahreszeit = factor(case_when(month %in% c(1,2,12) ~ "Winter",
+                                       month %in% c(3,4,5) ~ "Frühling",
+                                       month %in% c(6,7,8) ~ "Sommer",
+                                       month %in% c(9,10,11) ~ "Herbst"))) %>%
+  mutate(entfernung=round(distance/1.609344)) %>%
+  mutate(flughafen = as.factor(origin)) %>%
+  select(flughafen, jahreszeit, entfernung, verspaetet)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt das Thema:
+
+- Logistische Regresssion
+
+
+## Flugverspätungen
+
+Es liegt ein zufällige Stichprobe von Abflugdaten von drei New Yorker Flughäfen des Jahres 2013 vor. Neben der Information ob der Abflug verspätet erfolgte liegt noch die meterologische Jahrezeit und die Flugdistanz vor.
+
+
+```{r, message=FALSE}
+# Paket laden
+library(mosaic)
+# Datenstruktur
+str(Flights)
+# Erste Beobachtungen
+head(Flights)
+```
+
+## Logistische Regression
+
+Ein logistische Regression des Ergebnisses `verspaetet == "ja"` ergibt folgendes Ergebnis:
+
+```{r log}
+ergglm <- glm(verspaetet ~ flughafen + jahreszeit + entfernung, data = Flights, 
+              family = binomial())
+summary(ergglm)
+```
+
+```{r verspaetung, echo=FALSE}
+question("Welcher Flughafen hat die höchste Verspätungswahrscheinlichkeit?",
+         answer("John F. Kennedy International Airport (`JFK`).", message = "Die geschätzen Koeffizienten sind für `JFK` und `LGA` $<0$, bei diesen Flughäfen sinkt daher die Verspätungswahrscheinlichkeit im Vergleich zur Referenz, `EWR`."),
+         answer("Newark Liberty International Airport (`EWR`).",  correct = TRUE, message = "Die geschätzen Koeffizienten sind für `JFK` und `LGA` $<0$, bei diesen Flughäfen sinkt daher die Verspätungswahrscheinlichkeit im Vergleich zur Referenz, `EWR`."),
+         answer("Fiorello LaGuardia Airport (`LGA`).", message = "Die geschätzen Koeffizienten sind für `JFK` und `LGA` $<0$, bei diesen Flughäfen sinkt daher die Verspätungswahrscheinlichkeit im Vergleich zur Referenz, `EWR`.")
+         )
+```
+
+<br>
+
+```{r interpretation, echo=FALSE}
+question("Stimmt die Aussage: *Die Wahrscheinlichkeit einer Verspätung im Sommer liegt bei $0.1526075$*?",
+         answer("Ja.", message = "Die geschätzten Koeffizienten können zur Berechnung der Wahrscheinlichkeit und des Odds Ratios verwendet werden, geben aber die Wahrscheinlichkeit nicht direkt an."),
+         answer("Nein.",  correct = TRUE, message = "Die geschätzten Koeffizienten können zur Berechnung der Wahrscheinlichkeit und des Odds Ratios verwendet werden, geben aber die Wahrscheinlichkeit nicht direkt an.")
+         )
+```
+
+## Inferenz in der Logistischen Regression
+
+```{r h0, echo=FALSE}
+question("Was würde gelten, wenn theoretisch im Modell der Verspätungswahrscheinlichkeit kein Zusammenhang mit der Entfernung bestehen würde?",
+         answer("$\\beta_{\\text{entfernung}}=0$.", correct = TRUE,  message = "Auch wenn im Modell $\\beta_{\\text{entfernung}}=0$ gelten würde, kann (wie hier), $\\hat{\\beta}_{\\text{entfernung}} \\neq 0$ sein."),
+         answer("$\\hat{\\beta}_{\\text{entfernung}}=0$.",  message = "Auch wenn im Modell $\\beta_{\\text{entfernung}}=0$ gelten würde, kann (wie hier), $\\hat{\\beta}_{\\text{entfernung}} \\neq 0$ sein.")
+         )
+```
+
+<br>
+
+```{r hp, echo=FALSE}
+question("Liegt die Wahrscheinlichkeit, wenn die obige Annahme stimmen würde, für $|\\hat{\\beta}_{\\text{entfernung}}| \\geq |0.0002298|$ (`Estimate`) unter $5\\,\\%$?",
+         answer("Ja.",  message = "Der p-Wert (`Pr(>|z|)`) liegt bei $0.1074$ und damit über $0.05$. Ein mindestens so großer Effekt in einer Stichprobe ist also nicht sehr unwahrscheinlich, wenn gar keiner vorliegt."),
+         answer("Nein.", correct = TRUE, message = "Der p-Wert (`Pr(>|z|)`) liegt bei $0.1074$ und damit über $0.05$. Ein mindestens so großer Effekt in einer Stichprobe ist also nicht sehr unwahrscheinlich, wenn gar keiner vorliegt.")
+         )
+```
+
+
