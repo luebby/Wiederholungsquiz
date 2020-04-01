@@ -1,0 +1,133 @@
+---
+title: "12. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(knitr)
+
+# Zufallszahlengenerator setzen
+set.seed(1896)
+# Unabhänige Zufallszahlen als mögliche erklärende Variablen
+x <- matrix(rnorm(1000*100), nrow = 1000, ncol = 100)
+# Unabhänige Zufallszahlen als Zielvariable
+y <- rnorm(1000)
+# Gemeinsamer Datensatz
+Sim.Data <- data.frame(x,y)
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt das Thema:
+
+- Wissenschaftliche Grundlagen
+
+- Inferenz
+
+- Lineare Regression
+
+## Inferenz
+
+Zur Erhebung eines Mietpreisspiegels ziehen Chiara und Alexander aus derselben Population jeweils eine zufällige Stichprobe und berechnen ein $95\%$-Konfidenzintervall für die mittlere Miete $\mu$. Das von Chiara geht von $UG_{\text{Chiara}}$ bis $OG_{\text{Chiara}}$, das von Alexander von $UG_{\text{Alexander}}$ bis $OG_{\text{Alexander}}$ ($UG$: Untere Grenze, $OG$: Obere Grenze.)
+
+
+```{r ki, echo=FALSE}
+question("Werden beide auf dasselbe Konfidenzintervall kommen, d. h.,  $UG_{\\text{Chiara}}=UG_{\\text{Alexander}}$ und $OG_{\\text{Chiara}}=OG_{\\text{Alexander}}$",
+         answer("Ja.", message = "Das Zentrum ($\\hat{\\mu}$) als auch der geschätzte Standardfehler ($se$) variiert mit der zufälligen Stichprobe."),
+         answer("Nein.",  correct = TRUE, message = "Das Zentrum ($\\hat{\\mu}$) als auch der geschätzte Standardfehler ($se$) variiert mit der zufälligen Stichprobe."),
+         answer("Wenn $n_{\\text{Chiara}}=n_{\\text{Alexander}}$ ja, sonst nein.", message = "Das Zentrum ($\\hat{\\mu}$) als auch der geschätzte Standardfehler ($se$) variiert mit der zufälligen Stichprobe. Bei gleichen Stichprobenumfang ist die Breite des Konfidenzintervalls *ähnlich*, bei hohen Stichprobenumfang auch der Punktschätzer, aber i. d. R. nicht gleich.")
+         )
+```
+
+<br>
+
+Angenommen es sei $n_{\text{Chiara}}>n_{\text{Alexander}}$.
+
+```{r se, echo=FALSE}
+question("Wer hat dann eine höhrere Wahrscheinlichkeit für einen Fehler 2. Art?",
+         answer("Chiara.", message = "Bei guten Tests sinkt die Wahrscheinlichkeit für einen Fehler 2. Art mit zunehmenden Stichprobenumfang $n$."),
+         answer("Alexander.",  correct = TRUE, message = "Bei guten Tests sinkt die Wahrscheinlichkeit für einen Fehler 2. Art mit zunehmenden Stichprobenumfang $n$."),
+         answer("Beide haben eine gleich hohe Wahrscheinlichkeit für einen Fehler 2. Art.", message = "Bei guten Tests sinkt die Wahrscheinlichkeit für einen Fehler 2. Art mit zunehmenden Stichprobenumfang $n$.")
+         )
+```
+
+<br>
+
+Angenommen Sie bekommen bei im Rahmen einer Hypothesenprüfung einen p-Wert von $0.3$.
+
+```{r pw, echo=FALSE}
+question("Welche Aussage stimmt?",
+         answer("Sie haben gezeigt, dass die Nullhypothese stimmt.", message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt."),
+         answer("Sie haben gezeigt, dass die Alternativhypothese stimmt.", message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt."),
+         answer("Keine der beiden obigen Aussagen stimmt.", correct = TRUE, message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt.")
+         )
+```
+
+## Lineare Regression
+
+Wir erzeugen zufällig und unabhängig jeweils $n=1000$ Beobachtungen von $d=100$ standardnormalverteilten Variablen sowie eine zufällige abhängige Variable:
+
+```{r, eval=TRUE}
+# Zufallszahlengenerator setzen
+set.seed(1896)
+# Unabhänige Zufallszahlen als mögliche erklärende Variablen
+x <- matrix(rnorm(1000*100), nrow = 1000, ncol = 100)
+# Unabhänige Zufallszahlen als Zielvariable
+y <- rnorm(1000)
+# Gemeinsamer Datensatz
+Sim.Data <- data.frame(x,y)
+```
+
+Die Daten wurde so konstruiert, dass **keine** der Variablen $x_1, x_2, \ldots x_{100}$ einen Zusammenhang mit der Variable $y$ hat.
+
+```{r mt, echo=FALSE}
+question("Wie groß ist die Wahrscheinlichkeit, dass für mindestens eine der Variablen die Nullhypothese $H_0: \\beta_i=0$ zum Niveau $\\alpha=0.05$ verworfen wird?",
+         answer("$\\approx 0.01$.", message = "Das Signifikanzniveau $\\alpha$ ist die obere Grenze für die Irrtumswahrscheinlichkeit $H_0$ zu verwerfen, obwohl $H_0$ (wie hier) stimmt. Wenn die Nullhypothese stimmt, sind p-Werte gleichverteilt zwischen 0 und 1. Wenn - wie hier - $d=100$ Variablen geprüft werden, erwarten wir daher, dass $\\approx 100 \\cdot 0.05 = 5$ Variablen *signifikant* sind."),
+         answer("$\\approx 0.05$.", message = "Das Signifikanzniveau $\\alpha$ ist die obere Grenze für die Irrtumswahrscheinlichkeit $H_0$ zu verwerfen, obwohl $H_0$ (wie hier) stimmt. Wenn die Nullhypothese stimmt, sind p-Werte gleichverteilt zwischen 0 und 1. Wenn - wie hier - $d=100$ Variablen geprüft werden, erwarten wir daher, dass $\\approx 100 \\cdot 0.05 = 5$ Variablen *signifikant* sind. Die Wahrscheinlichkeit, dass mindestens eine signifikant ist, ist die Gegenwahrscheinlichkeit dazu, dass keine signifikant ist, daher $1-(1-0.05)^{100} \\approx 0.99$."),
+         answer("$\\approx 0.99$.", correct = TRUE, message = "Das Signifikanzniveau $\\alpha$ ist die obere Grenze für die Irrtumswahrscheinlichkeit $H_0$ zu verwerfen, obwohl $H_0$ (wie hier) stimmt. Wenn die Nullhypothese stimmt, sind p-Werte gleichverteilt zwischen 0 und 1. Wenn - wie hier - $d=100$ Variablen geprüft werden, erwarten wir daher, dass $\\approx 100 \\cdot 0.05 = 5$ Variablen *signifikant* sind. Die Wahrscheinlichkeit, dass mindestens eine signifikant ist, ist die Gegenwahrscheinlichkeit dazu, dass keine signifikant ist, daher $1-(1-0.05)^{100} \\approx 0.99$.")
+         )
+```
+
+##
+
+Das wird bei diesen simulierten Daten Ergebnis bestätigt, es gibt *zufällig* signifikante Variablen. Dieses Problem tritt beim **Multiplen Testen** auf.
+
+```{r Auswertung, exercise = TRUE}
+lm(y ~ ., data = Sim.Data) %>%
+  summary()
+```
+
+##
+
+Die Variable `X40` ist z. B. zum Niveau $\alpha=0.01$ *signifikant* (`Pr(>|t|): 0.00484`).
+
+```{r fehler, echo=FALSE}
+question("Welche Fehlerart liegt vor?",
+         answer("Fehler 1. Art ($\\alpha$-Fehler).", correct = TRUE, message = "Ein Fehler 1. Art liegt vor, wenn die Nullhypothese verworfen wird, obwohl sie stimmt."),
+         answer("Fehler 2. Art ($\\beta$-Fehler).", message = "Ein Fehler 2. Art liegt vor, wenn die Nullhypothese nicht verworfen wird, obwohl sie nicht stimmt."),
+         answer("Es liegt kein Fehler vor.", message = "Ein Fehler 1. Art liegt vor, wenn die Nullhypothese verworfen wird, obwohl sie stimmt. Ein Fehler 2. Art liegt vor, wenn die Nullhypothese nicht verworfen wird, obwohl sie nicht stimmt.")
+         )
+```
+
+##
+
+In einem Paper wird über diesen signifikanten Zusammenhang zwischen `X40` und `y` ausführlich berichtet. 
+
+```{r repro, echo=FALSE}
+question("Wird dieses Ergebnis reproduzierbar sein?",
+         answer("Eher ja.", message = "Der gefundene Zusammenhang ist *zufällig*, der Schluss `X40` $\\rightarrow$ `y` ist nicht valide. Trotzdem kann es natürlich zufällig so sein, dass auch in einer Wiederholungsstudie ein signifikanter Zusammenhang gefunden wird - die Wahrscheinlichkeit ist aber $<\\alpha$."),
+         answer("Eher nein.", correct = TRUE, message = "Der gefundene Zusammenhang ist *zufällig*, der Schluss `X40` $\\rightarrow$ `y` ist nicht valide. Trotzdem kann es natürlich zufällig so sein, dass auch in einer Wiederholungsstudie ein signifikanter Zusammenhang gefunden wird - die Wahrscheinlichkeit ist aber $<\\alpha$.")
+         )
+```
+
+##
+
+Hier wurden aber das **Gütekriterium** *Transparenz* der Auswertung eingehalten, das Ergebnis ist objektiv. Aufgrund der Simulation ist der Trugsschluss hier erkennbar, dass gilt in der Realität i.d.R. leider nicht. Daher: Theorie und Daten!
+
+(Sozial-)Wissenschaftliche Erkenntnisse sind i. d. R. nicht endgültig und (selbst-)kritisch zu hinterfragen!
