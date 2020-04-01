@@ -18,6 +18,8 @@ Motivation <- case0101
 
 ## Inhalt
 
+*... Fortsetzung von LFK 10*
+
 Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 - Grundlagen Quantitativer Datenanalyse
@@ -31,7 +33,7 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivational orientation on creative writers*. Journal of personality and social psychology, 48(2), 393, wird ein Kreativitässcore (`Score`)  und die Motivation (`Treatment`), extrinsisch (`Extrinsic`) bzw. intrinsisch (`Intrinsic`) analysiert. Dabei erhielten die Teilnehmenden vor der Kreativitätsmessung zufällig zugeordnet einen Fragebogen, der die jeweilige Motivation fokussierte. 
 
-Violonplot mit Mittelwert:
+Violinplot mit Mittelwert:
 
 ```{r, message=FALSE}
 gf_violin(Score ~ Treatment, color = ~ Treatment, data = Motivation) %>%
@@ -59,16 +61,16 @@ diff.stipro <- diffmean(Score ~ Treatment, data = Motivation)
 diff.stipro
 ```
 
-Nur weil wir in einer Stichprobe einen Unterschied sehen, heißt das nicht, dass in der Population einer vorliegt.
+Nur weil wir in einer **Stichprobe** einen Unterschied sehen, heißt das aber nicht, dass in der **Population** einer vorliegt.
 
 ## Inferenz
 
 ```{r h0, echo=FALSE}
 question("Wie lautet die Nullhypothese zur Analyse des Zusammenhangs zwischen Motivation ($x$) und Kreativitätsscore ($y$)?",
-         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} = 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
-         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
-         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} = 0$", correct = TRUE, message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
-         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*.")
+         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} = 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R.: *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R.: *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} = 0$", correct = TRUE, message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R.: *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R.: *kein Zusammenhang, kein Unterschied*.")
          )
 ```
 
@@ -99,9 +101,9 @@ question("Ist die beobachtete Differenz der Mittelwerte ($\\bar{y}_{\\text{Intri
 ```
 
 ```{r ph, echo=FALSE}
-question("Stimmt die Aussage: *Die Wahrscheinlichkeit, dass $H_0$ stimmt liegt bei $0.005$*?",
-         answer("Ja.", message = "Der p-Wert sagt, wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten."),
-         answer("Nein.", correct = TRUE, message = "Der p-Wert sagt, wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten.")
+question("Stimmt die Aussage: *Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt bei $0.005$*?",
+         answer("Ja.", message = "Der p-Wert sagt wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten."),
+         answer("Nein.", correct = TRUE, message = "Der p-Wert sagt wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten.")
          )
 ```
 
@@ -110,7 +112,7 @@ question("Stimmt die Aussage: *Die Wahrscheinlichkeit, dass $H_0$ stimmt liegt b
 ```{r generalisierung, echo=FALSE}
 question("Ist hier ein Kausalschluss `Treatment` $\\rightarrow$ `Score` gerechtfertigt?",
          answer("Ja.", correct = TRUE, message = "Die Daten wurden im Rahmen eines randomisierten Experiments gewonnen."),
-         answer("Nein.", message = "Beobachtungsstudien erlauben keinen unmittelbaren Kausalschluss, randomisierte Experimente schon.")
+         answer("Nein.", message = "Beobachtungsstudien erlauben keinen unmittelbaren Kausalschluss, randomisierte Experimente  wie hier jedoch schon.")
          )
 ```
 
