@@ -83,3 +83,7 @@ question("Stimmt die Aussage: *Unter sonst gleichen Umständen fällt der Standa
          answer("Nein.", message = "Je mehr Beobachtungen zur Schätzung herangezogen werden, desto kleiner ist die Variation der Schätzung.")       
          )
 ```
+
+<br>
+
+*Fortsetzung folgt*

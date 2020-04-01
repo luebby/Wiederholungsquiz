@@ -1,0 +1,145 @@
+---
+title: "11. LFK"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(Sleuth3)
+library(knitr)
+data("case0101", package = "Sleuth3")
+Motivation <- case0101
+```
+
+## Inhalt
+
+Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
+
+- Grundlagen Quantitativer Datenanalyse
+
+- Explorative Datenanalyse
+
+- Inferenz (Hypothesenprüfung)
+
+
+## Motivation
+
+Im Paper Amabile, T. M. (1985). *Motivation and creativity: Effects of motivational orientation on creative writers*. Journal of personality and social psychology, 48(2), 393, wird ein Kreativitässcore (`Score`)  und die Motivation (`Treatment`), extrinsisch (`Extrinsic`) bzw. intrinsisch (`Intrinsic`) analysiert. Dabei erhielten die Teilnehmenden vor der Kreativitätsmessung zufällig zugeordnet einen Fragebogen, der die jeweilige Motivation fokussierte. 
+
+<br>
+
+Vor der Behandlung, d. h. der zufälligen Zuordnung zu den beiden Gruppen, extrinsischer oder intrinsicher Motivation, wurde ein Vorab-Kreativitätsscore ermittelt.
+
+```{r, message=FALSE}
+library(mosaic)
+str(Motivation)
+head(Motivation)
+```
+
+
+Violonplot mit Mittelwert:
+
+```{r, message=FALSE}
+gf_violin(Score ~ Treatment, color = ~ Treatment, data = Motivation) %>%
+  gf_rugy(color = ~ Treatment) %>%
+  gf_point(Score ~ Treatment, stat = "summary", size = 5)
+  
+```
+
+```{r bary, echo=FALSE}
+question("In welcher Gruppe ist der Mittelwert des Kreativitätssscores größer?",
+         answer("`Extrinsic`", message = "$\\bar{y}_{\\text{Intrinsic}} \\approx 20 > 16 \\approx \\bar{y}_{\\text{Extrinsic}}$."),
+         answer("`Intrinsic`", correct = TRUE, message = "$\\bar{y}_{\\text{Intrinsic}} \\approx 20 > 16 \\approx \\bar{y}_{\\text{Extrinsic}}$"),
+         answer("Der Mittelwert ist bei beiden Gruppen gleich.", message = "$\\bar{y}_{\\text{Intrinsic}} \\approx 20 > 16 \\approx \\bar{y}_{\\text{Extrinsic}}$")
+         )
+```
+
+## 
+
+```{r}
+# Mittelwerte 
+mean(Score ~ Treatment, data = Motivation)
+
+# Differenz der Mittelwerte
+diff.stipro <- diffmean(Score ~ Treatment, data = Motivation)
+diff.stipro
+```
+
+Nur weil wir in einer Stichprobe einen Unterschied sehen, heißt das nicht, dass in der Population einer vorliegt.
+
+## Inferenz
+
+```{r h0, echo=FALSE}
+question("Wie lautet die Nullhypothese zur Analyse des Zusammenhangs zwischen Motivation ($x$) und Kreativitätsscore ($y$)?",
+         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} = 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} = 0$", correct = TRUE, message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*."),
+         answer("$\\mu_{\\text{Intrinsic}}-\\mu_{\\text{Extrinsic}} \\neq 0$", message = "Die Nullhypothese ($H_0$) bezieht sich auf die Population und lautet i. d. R. *kein Zusammenhang, kein Unterschied*.")
+         )
+```
+
+##
+
+Unter der **Annahme** $F_{\text{Extrinsic}}(y)=F_{\text{Intrinsic}}(y)$ können wir die Behandlung ($x$, `Treatment`) permutieren/ mischen (`shuffle()`):
+
+```{r}
+# Zufallszahlengenerator setzen
+set.seed(1896)
+
+# Simulation unter H_0
+Nullvtlg <- do(1000) * diffmean(Score ~ shuffle(Treatment), data = Motivation) 
+
+# Histogramm Permutationsverteilung
+gf_histogram( ~ diffmean, data = Nullvtlg, center = 0, bins = 21) %>%
+  gf_vline(xintercept = ~ diff.stipro)
+
+# p-Wert
+prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
+```
+
+```{r hp, echo=FALSE}
+question("Ist die beobachtete Differenz der Mittelwerte ($\\bar{y}_{\\text{Intrinsic}}-\\bar{y}_{\\text{Extrinsic}}$) wahrscheinlich, wenn die Nullhypothese gilt?",
+         answer("Ja.", message = "Der p-Wert ist klein. Eine Stichprobe mit einer mindestens so großen Differenz wie beobachtet ist damit unwahrscheinlich, wenn wir $F_{\\text{Extrinsic}}(y)=F_{\\text{Intrinsic}}(y)$ annehmen."),
+         answer("Nein.", correct = TRUE, message = "Der p-Wert ist klein. Eine Stichprobe mit einer mindestens so großen Differenz wie beobachtet ist damit unwahrscheinlich, wenn wir $F_{\\text{Extrinsic}}(y)=F_{\\text{Intrinsic}}(y)$ annehmen.")
+         )
+```
+
+```{r ph, echo=FALSE}
+question("Stimmt die Aussage: *Die Wahrscheinlichkeit, dass $H_0$ stimmt liegt bei $0.005$*?",
+         answer("Ja.", message = "Der p-Wert sagt, wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten."),
+         answer("Nein.", correct = TRUE, message = "Der p-Wert sagt, wie wahrscheinlich eine mindestens so große Abweichung ist, wenn $H_0$ stimmt - und **nicht** wie wahrscheinlich $H_0$ ist, wenn wir eine so große Abweichung beobachten.")
+         )
+```
+
+##
+
+```{r generalisierung, echo=FALSE}
+question("Ist hier ein Kausalschluss `Treatment` $\\rightarrow$ `Score` gerechtfertigt?",
+         answer("Ja.", correct = TRUE, message = "Die Daten wurden im Rahmen eines randomisierten Experiments gewonnen."),
+         answer("Nein.", message = "Beobachtungsstudien erlauben keinen unmittelbaren Kausalschluss, randomisierte Experimente schon.")
+         )
+```
+
+Im Abstract des Papers heißt es:
+
+> This study directly tested the hypothesis that intrinsic motivation is conducive to
+creativity and extrinsic motivation is detrimental. Chosen because they identified
+themselves as actively involved in creative writing, 72 young adults participated
+in individual laboratory sessions where they were asked to write 2 brief poems.
+Before writing the second poem, subjects in an intrinsic orientation condition
+completed a questionnaire that focused on intrinsic reasons for being involved in
+writing. Subjects in an extrinsic orientation condition completed a questionnaire
+that focused on extrinsic reasons. Those in a control condition were not given a
+questionnaire on reasons for writing. Although there were no initial differences
+between conditions on prior involvement in writing or on creativity of the first
+poems written, there were significant differences in the creativity of the poems
+written after the experimental manipulations. Poems written under an extrinsic
+orientation were significantly less creative than those written in the other two
+conditions. 
+
+
