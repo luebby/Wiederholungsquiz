@@ -28,13 +28,15 @@ Diese Lernfortschrittskontrolle (LFK) behandelt das Thema:
 
 - Wissenschaftliche Grundlagen
 
+- Grundlagen Quantitativer Datenanalyse
+
 - Inferenz
 
 - Lineare Regression
 
 ## Inferenz
 
-Zur Erhebung eines Mietpreisspiegels ziehen Chiara und Alexander aus derselben Population jeweils eine zufällige Stichprobe und berechnen ein $95\%$-Konfidenzintervall für die mittlere Miete $\mu$. Das von Chiara geht von $UG_{\text{Chiara}}$ bis $OG_{\text{Chiara}}$, das von Alexander von $UG_{\text{Alexander}}$ bis $OG_{\text{Alexander}}$ ($UG$: Untere Grenze, $OG$: Obere Grenze.)
+Zur Erhebung eines Mietpreisspiegels ziehen Chiara und Alexander aus derselben Population jeweils eine Stichprobe und berechnen ein $95\%$-Konfidenzintervall für die mittlere Miete $\mu$. Das von Chiara geht von $UG_{\text{Chiara}}$ bis $OG_{\text{Chiara}}$, das von Alexander von $UG_{\text{Alexander}}$ bis $OG_{\text{Alexander}}$ ($UG$: Untere Grenze, $OG$: Obere Grenze.)
 
 
 ```{r ki, echo=FALSE}
@@ -66,6 +68,17 @@ question("Welche Aussage stimmt?",
          answer("Sie haben gezeigt, dass die Nullhypothese stimmt.", message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt."),
          answer("Sie haben gezeigt, dass die Alternativhypothese stimmt.", message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt."),
          answer("Keine der beiden obigen Aussagen stimmt.", correct = TRUE, message = "Der p-Wert misst *nur* die Randwahrscheinlichkeit der Teststatistik, wenn das Modell $H_0$ stimmt. Bei einem hohen p-Wert wie hier wird $H_0$ nicht verworfen - aber auch nicht bestätigt.")
+         )
+```
+
+<br>
+
+```{r gen, echo=FALSE}
+question("Was muss vorliegen, damit dass Ergebnis auf die Population generalisiert werden kann?",
+         answer("Ein hoher Stichprobenumfang, mindestens $n>30$.", message = "Generell sind hohe Stichprobenumfänge zu bevorzugen, sie lösen aber nicht das Problem einer potentiellen Verzerrung einer Gelegenheitsstichprobe"),
+         answer("Normalverteilte Daten.", message = "Eine Normalverteilung ermöglicht eine relativ einfache Berechnung von Wahrscheinlichkeiten, und häufig sind Mittelwerte usw. annährend normalverteilt, um ein Ergebnis zu generalisieren ist sie aber nicht erforderlich."),
+         answer("Eine zufällige Zuordnung innerhalb eines Experiments.", message = "Eine zufällige Zuordnung der Beoabachtungen zu verschiedenen Werte der unabhängigen Variable ermöglicht ggf. einen Kausalschluss, aber bei einer Gelegenheitsstichprobe keine unmittelbare Generalisierung auf die Population."),
+         answer("Eine zufällige Stichprobe.", correct = TRUE, message = "Eine zufällige Stichprobe, d.h. jede Beobachtung der Population hat die gleiche Wahrscheinlichkeit Teil der Stichprobe zu sein, ermöglicht eine Generalisierung auf die zugrundeliegende Population")
          )
 ```
 
