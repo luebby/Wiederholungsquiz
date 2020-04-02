@@ -63,6 +63,10 @@ Wie lautet die angemessene Modellierungsformel (`Y ~ X + C_i`), d.h. welche Kova
 
 ##
 
+<br>
+
 `Testergebnis ~ Bildungsausgaben + Ausbildung Eltern + Einkommen Eltern`
+
+<br>
 
 Variablen die auf den kausalen Pfad von *Bildungsausgaben* $\rightarrow$ *Testergebnis* liegen sollten nicht adustiert werden (d.h. *Klassengröße* und *Gehalt Lehrer\*in*). Blockiert durch Adjustierung werden die nicht-kausalen Pfade, d.h. die mit Pfeilen in die erklärende Variable.
