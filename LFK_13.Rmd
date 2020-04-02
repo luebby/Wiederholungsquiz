@@ -37,21 +37,23 @@ Diese Lernfortschrittskontrolle (LFK) behandelt das Thema:
 
 ## Flugverspätungen
 
-Es liegt ein zufällige Stichprobe von Abflugdaten von drei New Yorker Flughäfen des Jahres 2013 vor. Neben der Information ob der Abflug verspätet erfolgte liegt noch die meterologische Jahrezeit und die Flugdistanz vor.
+Es liegt eine zufällige Stichprobe von Abflugdaten von drei New Yorker Flughäfen des Jahres 2013 vor. Neben der Information ob der Abflug verspätet erfolgte, liegt noch die meteorologische Jahreszeit und die Flugdistanz vor.
 
 
 ```{r, message=FALSE}
 # Paket laden
 library(mosaic)
+
 # Datenstruktur
 str(Flights)
+
 # Erste Beobachtungen
 head(Flights)
 ```
 
 ## Logistische Regression
 
-Ein logistische Regression des Ergebnisses `verspaetet == "ja"` ergibt folgendes Ergebnis:
+Eine logistische Regression des Ergebnisses `verspaetet == "ja"` ergibt folgendes Resultat:
 
 ```{r log}
 ergglm <- glm(verspaetet ~ flughafen + jahreszeit + entfernung, data = Flights, 
