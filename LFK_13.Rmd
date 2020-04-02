@@ -96,4 +96,6 @@ question("Liegt die Wahrscheinlichkeit, wenn die obige Annahme stimmen würde, f
          )
 ```
 
+##
 
+Insgesamt ist es mit einer logistischen Regression möglich Verspätungswahrscheinlichkeiten zu modellieren, vorherzusagen und wichtige Indikatoren zu identifizieren.
