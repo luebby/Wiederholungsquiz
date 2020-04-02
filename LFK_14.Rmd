@@ -57,7 +57,7 @@ Die Variable *Zeit mit Kindern* kann nicht erhoben werden.
 ggdag(school_dag, text = FALSE, use_labels = "label") + theme_dag_blank() 
 ```
 
-Wie lautet die angemessene Modellierungsformel (`Y ~ X + C_i`), d.h. welche Kovariale(n) `C_i` sollten berücksichtigt (adjustiert) werden?
+Wie lautet die angemessene Modellierungsformel (`Y ~ X + C_i`), d. h. welche Kovariale(n) `C_i` sollten berücksichtigt (adjustiert) werden?
 
 *Zum Lösungsvorschlag auf `Next Topic` klicken.*
 
@@ -69,4 +69,4 @@ Wie lautet die angemessene Modellierungsformel (`Y ~ X + C_i`), d.h. welche Kova
 
 <br>
 
-Variablen die auf den kausalen Pfad von *Bildungsausgaben* $\rightarrow$ *Testergebnis* liegen sollten nicht adustiert werden (d.h. *Klassengröße* und *Gehalt Lehrer\*in*). Blockiert durch Adjustierung werden die nicht-kausalen Pfade, d.h. die mit Pfeilen in die erklärende Variable.
+Variablen die auf den kausalen Pfaden von *Bildungsausgaben* $\rightarrow$ *Testergebnis* liegen sollten nicht adustiert werden (d. h. *Klassengröße* und *Gehalt Lehrer\*in*). Blockiert durch Adjustierung werden die nicht-kausalen Pfade, d. h. die mit Pfeilen in die erklärende Variable.
