@@ -88,7 +88,7 @@ question("Welche der beiden Umrechnungen ist linear?",
 
 ## Explorative Datenanalyse
 
-Aus *inhaltlichen* Gründen wird entschieden, dass der Spritverbrauch `lp100km` die abhängige Variable $x$ ist, das Gewicht `kg` die unabhängige (`y`):
+Aus *inhaltlichen* Gründen wird entschieden, dass der Spritverbrauch `lp100km` die abhängige Variable $y$ ist, das Gewicht `kg` die unabhängige ($x$):
 
 
 ```{r Streudiagramm, exercise = TRUE} 
