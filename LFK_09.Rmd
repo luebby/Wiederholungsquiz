@@ -111,7 +111,7 @@ Eine *andere* Alternative wäre das Modell: $$\text{price}_i=\beta_0 + \beta_1\c
 
 ## Lineare Regression
 
-Eine Lineare Regression der Quadratwurzel des Preises (Nicht vergessen: Rücktransformation für Prognose oder Interpretation notwendig!) auf Karat und Farbe ergibt folgendes Ergebnis:
+Eine Lineare Regression der Quadratwurzel des Preises auf Karat und Farbe ergibt folgendes Ergebnis:
 
 ```{r reg-setup, echo=FALSE}
 my.diamonds <- my.diamonds %>%
@@ -134,6 +134,9 @@ question("Stimmt die Aussage: *Mehr als die Hälfte der Variation der Quadratwur
          answer("Nein.", message = "$R^2>0.5$ (`Multiple R-squared:  0.8978`).")
          )
 ```
+
+*Hinweis*: Bei einer Regression mit einer transformierten abhängigen Variable ist bei der Prognose i.d.R. eine Rücktransformation mit einem zusätzlichen Korrekturfaktor erforderlich.
+
 
 ## Inferenz in der Regression
 
