@@ -82,14 +82,14 @@ question("Welcher Datensatz wird mehr Beobachtungen ($n$) enthalten?",
 
 ## Variablentransformation
 
-Viele Zusammenhänge sind nicht linear, daher werden hier verschiedene Zusammenhänge, häufig z. B. auch der Logarithmus `log()`, oder aber auch die Wurzeltransformation $\sqrt{}$ betrachtet -- in R: `sqrt()`:
+Viele Zusammenhänge sind nicht linear, daher werden hier verschiedene Zusammenhänge, häufig z. B. auch der Logarithmus `log()`, oder aber auch die Wurzeltransformation $\sqrt{}$ betrachtet -- in R: `log(); sqrt()`:
 
 ```{r, message=FALSE}
 # Abbildungen erzeugen
 p1 <- gf_point(price ~ carat, color = ~ color, data = my.diamonds) %>%
-        gf_labs(title = "Ohne Transformation \n des Preises")
-p2 <- gf_point(sqrt(price) ~ carat, color = ~ color, data = my.diamonds) %>%
-        gf_labs(title = "Wurzeltransformation \n des Preises")
+        gf_labs(title = "Ohne Transformation")
+p2 <- gf_point(log(price) ~ log(carat), color = ~ color, data = my.diamonds) %>%
+        gf_labs(title = "Mit Transformation")
 
 # Paket laden
 library(gridExtra)
@@ -100,38 +100,58 @@ grid.arrange(p1, p2, ncol = 2)
 
 ```{r trafo, echo=FALSE}
 question("Welches Modell scheint angemessener zu sein?",
-         answer("$\\text{price}_i=\\beta_0 + \\beta_1\\cdot \\text{carat}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\sqrt{\\text{price}}$ und $\\text{carat}$ aus."),
-         answer("$\\sqrt{\\text{price}}_i=\\beta_0 + \\beta_1\\cdot \\text{carat}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", correct=TRUE, message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\sqrt{\\text{price}}$ und $\\text{carat}$ aus.")
+         answer("$\\text{price}_i=\\beta_0 + \\beta_1\\cdot \\text{carat}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\log{\\text{price}}$ und $\\log{\\text{carat}}$ aus."),
+         answer("$\\log{\\text{price}}_i=\\beta_0 + \\beta_1\\cdot \\log{\\text{carat}}_i+\\beta_2\\cdot \\text{color}_i+\\epsilon_i$", correct=TRUE, message = "Während ohne Transformation der Zusammenhang eher quadratisch (*Parabel*) aussieht, sieht er nach Transformation eher linear zwischen $\\log{\\text{price}}$ und $\\log{\\text{carat}}$ aus.")
          )
 ```
 
+
 ##
 
-Eine *andere* Alternative wäre das Modell: $$\text{price}_i=\beta_0 + \beta_1\cdot \text{carat}^2_i+\beta_2\cdot \text{color}_i+\epsilon_i$$
+
+*Hinweis*: Durch Logarithmierung können rechtsschiefe Variablen *symmetrischer* werden:
+
+
+```{r hist, echo = FALSE}
+# Abbildungen erzeugen
+h1 <- gf_histogram( ~ price, data = my.diamonds) %>%
+        gf_labs(title = "Ohne Transformation")
+h2 <- gf_histogram( ~ log(price), data = my.diamonds) %>%
+        gf_labs(title = "Mit Transformation")
+
+# Paket laden
+library(gridExtra)
+
+# Abbildungen nebeneinander arrangieren
+grid.arrange(p1, p2, ncol = 2)
+```
+
 
 ## Lineare Regression
 
-Eine Lineare Regression der Quadratwurzel des Preises auf Karat und Farbe ergibt folgendes Ergebnis:
+Eine Lineare Regression des Logarithmus des Preises auf den Logarithmus von Karat und Farbe ergibt folgendes Ergebnis:
 
 ```{r reg-setup, echo=FALSE}
 my.diamonds <- my.diamonds %>%
-  mutate(sqrt.price = sqrt(price))
+  mutate(log.price = log(price),
+         log.carat = log(carat))
 
-erg.lm <- lm(sqrt.price ~ carat + color, data = my.diamonds)
+erg.lm <- lm(log.price ~ log.carat + color, data = my.diamonds)
 ```
 
 ```{r reg}
 my.diamonds <- my.diamonds %>%
-  mutate(sqrt.price = sqrt(price))
+  mutate(log.price = log(price),
+         log.carat = log(carat))
 
-erg.lm <- lm(sqrt.price ~ carat + color, data = my.diamonds)
+erg.lm <- lm(log.price ~ log.carat + color, data = my.diamonds)
 summary(erg.lm)
 ```
 
 ```{r r2, echo=FALSE}
-question("Stimmt die Aussage: *Mehr als die Hälfte der Variation der Quadratwurzel des Preises kann hier modelliert werden*?",
-         answer("Ja.", correct = TRUE, message = "$R^2>0.5$ (`Multiple R-squared:  0.8978`)."),
-         answer("Nein.", message = "$R^2>0.5$ (`Multiple R-squared:  0.8978`).")
+question("Stimmt die Aussage: *Mehr als die Hälfte der Variation des Logarithmus des Preises kann hier modelliert werden*?",
+         answer("Ja.", correct = TRUE, message = "$R^2>0.5$ (`Multiple R-squared:  0.9378`)."),
+         answer("Nein.", message = "$R^2>0.5$ (`Multiple R-squared:  0.9378`).")
          )
 ```
 
@@ -148,26 +168,26 @@ set.seed(1896)
 
 # Resampling-Verteilung bestimmen 
 Bootvtlg <- do(1000) * 
-  lm(sqrt.price ~ carat + color, data = resample(my.diamonds))
+  lm(log.price ~ log.carat + color, data = resample(my.diamonds))
 
 # Histogramm der Bootstrap Verteilung des geschätzten Koeffizienten
-gf_histogram( ~ carat, data = Bootvtlg)
+gf_histogram( ~ log.carat, data = Bootvtlg)
 
 # 95% Resampling Intervall
-quantile( ~ carat, probs = c(0.025, 0.975), data = Bootvtlg)
+quantile( ~ log.carat, probs = c(0.025, 0.975), data = Bootvtlg)
 ```
 
 ```{r ki, echo=FALSE}
-question("Stimmt die Aussage: *Auch ein Wert von ${\\beta}_1=0.5$ wäre mit den Daten kompatibel*?",
-         answer("Ja.", message = "${\\beta}_1=0.5$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt."),
-         answer("Nein.", correct = TRUE, message = "${\\beta}_1=0.5$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt.")
+question("Stimmt die Aussage: *Auch ein Wert von ${\\beta}_1=1$ wäre mit den Daten kompatibel*?",
+         answer("Ja.", message = "${\\beta}_1=1$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt."),
+         answer("Nein.", correct = TRUE, message = "${\\beta}_1=1$ wird vom mittels Bootstrap geschätzen Konfidenzintervall nicht überdeckt.")
          )
 ```
 
 ##
 
 ```{r h0, echo=FALSE}
-question("Welche Aussage stimmt, wenn man annimmt, dass es theoretisch keinen Zusammenhang zwischen der Farbe und der Quadratwurzel des Preises gibt?",
+question("Welche Aussage stimmt, wenn man annimmt, dass es theoretisch keinen Zusammenhang zwischen der Farbe und des Logarithmus des Preises gibt?",
          answer("$\\hat{\\beta}_2=0$", message = "Der geschätzte Wert der Stichprobe ($\\hat{\\beta}$) ist bekannt. Hypothesen beziehen sich immer auf das Modell."),
          answer("$\\hat{\\beta}_2 \\neq 0$", message = "Der geschätzte Wert der Stichprobe ($\\hat{\\beta}$) ist bekannt. Hypothesen beziehen sich immer auf das Modell."),
          answer("${\\beta}_2 = 0$", correct = TRUE, message = "Hypothesen beziehen sich auf das Modell, und die Nullhypothese lautet i. d. R. *kein* Zusammenhang."), 
@@ -175,7 +195,7 @@ question("Welche Aussage stimmt, wenn man annimmt, dass es theoretisch keinen Zu
          )
 ```
 
-Simulation der Verteilung *wenn es keinen Zusammenhang* zwischen Farbe und Quadratwurzel des Preises gäbe:
+Simulation der Verteilung *wenn es keinen Zusammenhang* zwischen Farbe und dem Logarithmus des Preises gäbe (gegeben Karat):
 
 ```{r sim0}
 # Zufallszahlengenerator setzen
@@ -183,7 +203,7 @@ set.seed(1896)
 
 # Simulation Verteilung unter Annahme kein Zusammenhang 
 Nullvtlg <- do(1000) * 
-  lm(sqrt.price ~ carat + shuffle(color), data = my.diamonds)
+  lm(log.price ~ log.carat + shuffle(color), data = my.diamonds)
 
 # Histogramm der Verteilung des geschätzten Koeffizienten unter der Annahme
 gf_histogram( ~ colorworst, data = Nullvtlg)
