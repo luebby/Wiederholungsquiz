@@ -119,11 +119,9 @@ h1 <- gf_histogram( ~ price, data = my.diamonds) %>%
 h2 <- gf_histogram( ~ log(price), data = my.diamonds) %>%
         gf_labs(title = "Mit Transformation")
 
-# Paket laden
-library(gridExtra)
 
 # Abbildungen nebeneinander arrangieren
-grid.arrange(h1, h2, ncol = 2)
+grid.arrange(h1, h2, ncol = 1)
 ```
 
 
@@ -160,7 +158,7 @@ question("Stimmt die Aussage: *Mehr als die Hälfte der Variation des Logarithmu
 
 ## Inferenz in der Regression
 
-Der geschätzte Koeffizient $\hat{\beta}_1=`r round(coef(erg.lm)[2],2)`$ ist das Ergebnis *dieser* Stichprobe: eine andere Stichrprobe hätte evtl. ein anderes Ergebnis ergeben. Diese Unsicherheit kann über Bootstrapping simuliert werden:
+Der geschätzte Koeffizient $\hat{\beta}_1=`r round(coef(erg.lm)[2],2)`$ ist das Ergebnis *dieser* Stichprobe: eine andere Stichprobe hätte evtl. ein anderes Ergebnis ergeben. Diese Unsicherheit kann über Bootstrapping simuliert werden:
 
 ```{r Boot}
 # Zufallszahlengenerator setzen
