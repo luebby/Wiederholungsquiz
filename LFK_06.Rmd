@@ -42,6 +42,27 @@ question("Welcher Variable wird dabei der Wert zugewiesen?",
          )
 ```
 
+## Lineare Funktion
+
+Die Gleichung einer linearen Funktion lautet:
+
+$$y = \alpha + \beta \cdot x$$
+
+```{r echo=FALSE}
+x <- seq(-5,10)
+y <- 30 - 10*x
+gf_line(y~x)
+```
+
+```{r Gleichung, echo=FALSE}
+question("Welche Koeffizienten passen zu obiger Abbildung?",
+         answer("$\\alpha=30, \\beta=10$", message = "An der Stelle $x=0$ ist $y>0$, also ist der Achsenabschnitt $\\alpha>0$. Die Gerade fällt, also ist die Steigung $\\beta<0$."),
+         answer("$\\alpha=30, \\beta=-10$", correct = TRUE, message = "An der Stelle $x=0$ ist $y>0$, also ist der Achsenabschnitt $\\alpha>0$. Die Gerade fällt, also ist die Steigung $\\beta<0$."),
+         answer("$\\alpha=-30, \\beta=10$", message = "An der Stelle $x=0$ ist $y>0$, also ist der Achsenabschnitt $\\alpha>0$. Die Gerade fällt, also ist die Steigung $\\beta<0$."),
+         answer("$\\alpha=-30, \\beta=-10$", message = "An der Stelle $x=0$ ist $y>0$, also ist der Achsenabschnitt $\\alpha>0$. Die Gerade fällt, also ist die Steigung $\\beta<0$.")
+         )
+```
+
 ## Zusammenhang Gewicht und Spritverbrauch
 
 Der `R` interne Datensatz `mtcars` enthält Kennzahlen von Automobilen aus dem Jahr 1974.
