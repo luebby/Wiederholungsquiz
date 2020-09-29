@@ -35,6 +35,23 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Lineare Regression
 
 
+## Regressionskoeffizienten
+
+```{r, echo = FALSE}
+set.seed(1896)
+x <- runif(40, min = -5, max = 15)
+y <- - 10 + 5 * x + rnorm(40, sd = 5)
+gf_point(y ~x)
+```
+
+```{r Schaetzung, echo=FALSE}
+question("Welche geschätzten Regressionskoeffizienten passen zu obiger Abbildung?",
+         answer("$\\hat{\\beta}_0\\approx -10, \\hat{\\beta}_1 \\approx -5$", message = "An der Stelle $x=0$ liegt eine gedachte Gerade unter $y<0$, also ist der geschätzte Achsenabschnitt $\\hat{\\beta}_0<0$. Die Gerade steigt, also ist die geschätzte Steigung $\\hat{\\beta}_1>0$."),
+                  answer("$\\hat{\\beta}_0\\approx 10, \\hat{\\beta}_1 \\approx -5$", message = "An der Stelle $x=0$ liegt eine gedachte Gerade unter $y<0$, also ist der geschätzte Achsenabschnitt $\\hat{\\beta}_0<0$. Die Gerade steigt, also ist die geschätzte Steigung $\\hat{\\beta}_1>0$."),
+                  answer("$\\hat{\\beta}_0\\approx -10, \\hat{\\beta}_1 \\approx 5$", correct = TRUE, message = "An der Stelle $x=0$ liegt eine gedachte Gerade unter $y<0$, also ist der geschätzte Achsenabschnitt $\\hat{\\beta}_0<0$. Die Gerade steigt, also ist die geschätzte Steigung $\\hat{\\beta}_1>0$."),
+                  answer("$\\hat{\\beta}_0\\approx 10, \\hat{\\beta}_1 \\approx 5$", message = "An der Stelle $x=0$ liegt eine gedachte Gerade unter $y<0$, also ist der geschätzte Achsenabschnitt $\\hat{\\beta}_0<0$. Die Gerade steigt, also ist die geschätzte Steigung $\\hat{\\beta}_1>0$.")
+         )
+```
 
 ## Zusammenhang Gewicht, Getriebe und Spritverbrauch
 
