@@ -29,6 +29,25 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 - Lineare Regression
 
 
+## Bestimmtheitsmaß
+
+
+```{r, echo = FALSE}
+set.seed(1896)
+x <- runif(40, min = -10, max = 5)
+y <-  10 - 5 * x + rnorm(40, sd = 5)
+gf_point(y ~x)
+```
+
+```{r Schaetzung, echo=FALSE}
+question("Wie hoch ist das Bestimmtheitsmaß $R^2$?",
+         answer("$R^2 \\approx -0.95$", message = "Es gilt immer $R^2 \\geq 0$."),
+         answer("$R^2 \\approx -0.05$", message = "Es gilt immer $R^2 \\geq 0$."),
+         answer("$R^2 \\approx 0.05$", message = "Es ist ein sehr starker linearer Zusammenhang erkennbar, daher $|r|>0.7$ und damit $R^2>0.5$"),
+         answer("$R^2 \\approx 0.95$", correct = TRUE, message = "Es ist ein sehr starker linearer Zusammenhang erkennbar, daher $|r|>0.7$ und damit $R^2>0.5$")
+         )
+```
+
 ## Diamantenpreis
 
 Wie kann der Preis eines Diamanten modelliert werden?
