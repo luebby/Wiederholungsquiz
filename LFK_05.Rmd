@@ -21,6 +21,20 @@ Diese Lernfortschrittskontrolle (LFK) behandelt die Themen:
 
 - Normalverteilung
 
+## Parameter Normalverteilung
+
+```{r, echo=FALSE}
+gf_dist("norm", mean = 10, sd = 2)
+```
+
+```{r Parmeter, echo=FALSE}
+question("Welche Parameter hat obige Verteilung?",
+         answer("$\\mu=2, \\sigma=2$", message = "Das Zentrum der Verteilung liegt bei 10. Die Normalverteilung ist symmetrisch, und die Wahrscheinlichkeit für ein $x$ innerhalb von $\\pm 1 \\cdot \\sigma$ um $\\mu$ liegt bei ca. $0.68$, für $x$ innerhalb von $\\mu \\pm 2 \\cdot \\sigma$ liegt die Wahrscheinlichkeit bei ca. $0.95$ und $P(x \\in [\\mu \\pm 3 \\cdot \\sigma]) \\approx 0.997$."),
+         answer("$\\mu=10, \\sigma=2$", correct = TRUE, message = "Das Zentrum der Verteilung liegt bei 10. Die Normalverteilung ist symmetrisch, und die Wahrscheinlichkeit für ein $x$ innerhalb von $\\pm 1 \\cdot \\sigma$ um $\\mu$ liegt bei ca. $0.68$, für $x$ innerhalb von $\\mu \\pm 2 \\cdot \\sigma$ liegt die Wahrscheinlichkeit bei ca. $0.95$ und $P(x \\in [\\mu \\pm 3 \\cdot \\sigma]) \\approx 0.997$."),
+         answer("$\\mu=2, \\sigma=10$", message = "Das Zentrum der Verteilung liegt bei 10. Die Normalverteilung ist symmetrisch, und die Wahrscheinlichkeit für ein $x$ innerhalb von $\\pm 1 \\cdot \\sigma$ um $\\mu$ liegt bei ca. $0.68$, für $x$ innerhalb von $\\mu \\pm 2 \\cdot \\sigma$ liegt die Wahrscheinlichkeit bei ca. $0.95$ und $P(x \\in [\\mu \\pm 3 \\cdot \\sigma]) \\approx 0.997$."),
+         answer("$\\mu=10, \\sigma=10$", message = "Das Zentrum der Verteilung liegt bei 10. Die Normalverteilung ist symmetrisch, und die Wahrscheinlichkeit für ein $x$ innerhalb von $\\pm 1 \\cdot \\sigma$ um $\\mu$ liegt bei ca. $0.68$, für $x$ innerhalb von $\\mu \\pm 2 \\cdot \\sigma$ liegt die Wahrscheinlichkeit bei ca. $0.95$ und $P(x \\in [\\mu \\pm 3 \\cdot \\sigma]) \\approx 0.997$.") 
+         )
+```
 
 ## Value-at-Risk
 
