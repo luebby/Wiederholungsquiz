@@ -89,7 +89,7 @@ Interpretieren Sie das Ergebnis.
 
 ##
 
-Mit einer Wahrscheinlichkeit von $5\,\%$ ist bei einem Portfoliowert von $500000$ der Verlust innerhalb von $5$ Tagen nicht größer als `r VaR`.
+Mit einer Wahrscheinlichkeit von $95\,\%$ ist bei einem Portfoliowert von $500000$ der Verlust innerhalb von $5$ Tagen nicht größer als `r VaR`.
 
 ## Verteilungsalternativen zur Normalverteilung
 
